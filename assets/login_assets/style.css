@@ -1,0 +1,28 @@
+/*****************************************
+ * Login  PAGE                           *
+ ****************************************/
+
+.signin-page #signin-container {
+  margin : 150px auto !important;
+}
+
+/*****************************************
+ * Store Index  PAGE                     *
+ ****************************************/
+
+#stores.content .store__logo img {
+	height: 60px !important;
+}
+
+ul.pagination li a, ul.pagination li button  {
+    border-color: #e8e8e8;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.image_box {
+	width: 120px;
+	height: 80px;
+	background: url("../images/noimage.jpg");
+	background-size: 100% 100%;
+}
