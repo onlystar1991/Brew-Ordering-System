@@ -31,6 +31,7 @@
                                 <th class="table--dsh__header">Quantity</th>
                                 <th class="table--dsh__header">Demand</th>
                                 <th class="table--dsh__header">Status</th>
+                                <th class="table--dsh__header"></th>
                             </tr>
                             <?php
                             $str = "";
@@ -97,13 +98,21 @@
 
 	    </div>
 	</main>
-
 <?php
 	$this->load->view("_partials/footer.php");
 ?>
 <script>
     $(function() {
         $("#addBeerButton").click(function() {
+            var beers = <?php echo json_encode($this->data['stores']);?>;
+            var select_tag = "<select name='store_id' style='margin-top: 15px;'>";
+            var beerObjects = {};
+            for(var beer in beers) {
+                select_tag +=  "<option value='" + beers[beer].store_id + "'>" + beers[beer].store_name + "</option>";
+            }
+            select_tag += "</select>";
+            console.log(select_tag);
+
             var html =  "<tr>" + 
                             "<td>" +
                                 "<input type='text' id='td-sku' value='' name='sku' />" + 
@@ -128,13 +137,23 @@
                             "<td>" +
                                 "<input type='text' id='td-demand' value='' name='demand' />" +
                             "</td>" +
-                            
+
+                            "<td>" + 
+                                select_tag +
+                            "</td>" +
+
                             "<td>" +
                                 "<a href='#'' id='saveBeer' class='button secondary' style='margin: 0;'> Save </a>" +
                             "</td>" +
                         "</tr>";
 
             $("#inventory tbody").append(html);
+
+            var beers = <?php echo json_encode($this->data['beers']);?>;
+
+            $("#td-name").autocomplete({
+                source: beers
+            })
             $("#saveBeer").click(function(e) {
                 var isValid = true;
                 if ($.isNumeric($("#td-sku").val()) && $.isNumeric($("#td-price").val()) && $.isNumeric($("#td-quantity").val()) && $.isNumeric($("#td-demand").val())) {

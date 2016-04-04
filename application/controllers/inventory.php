@@ -17,7 +17,8 @@ use Parse\ParseException;
 use Parse\ParseObject;
 use Parse\ParseQuery;
 use Parse\ParseFile;
-
+use Parse\ParseInstallation;
+use Parse\ParsePush;
 
 class Inventory extends CI_Controller{
 
@@ -30,6 +31,7 @@ class Inventory extends CI_Controller{
         parent::__construct();
         ParseClient::initialize(self::$app_id, self::$rest_key, self::$master_key);
         $this->load->model('minventory');
+        $this->load->model('mstore');
         $this->load->helper('url');
         $this->load->library("pagination");
         $this->load->library("session");
@@ -71,16 +73,52 @@ class Inventory extends CI_Controller{
         $this->data['inventories'] = $result_array;
         $this->data['page'] = "inventory";
 
+        $this->data['beers'] = $this->getBeerList();
+
+        $this->data['stores'] = $this->getStoreList();
+
         if ($permission == "retailer") {
             $this->load->view('inventory/index', $data);
         } else {
+
             $this->load->view('inventory/distributor', $data);
         }
     }
+
+    private function getStoreList() {
+        $query1 = new ParseQuery("Stores");
+
+        $result1 = $query1->find();
+        $resultArray1 = array();
+
+        for($i = 0; $i < count($result1); $i++) {
+            $object = $result1[$i];
+            
+            $store = new MStore();
+            $store->store_id = $object->getObjectId();
+            $store->store_name = $object->get("storeName");
+
+            $resultArray1[] = $store;
+        }
+        return $resultArray1;
+    }
     
+    private function getBeerList() {
+        $query = new ParseQuery("Beer");
+        $result = $query->find();
+        $resultArray = array();
+        for($i = 0; $i < count($result); $i++) {
+            $object = $result[$i];
+
+            $resultArray[] = $object->get("beerTitle");
+        }
+        return $resultArray;
+    }
+
     private function getInventorylist() {
        
         $query = new ParseQuery("Inventory");
+        $query->equalTo("createdBy", $this->session->userdata['permission']);
         $result = $query->find();
         $resultArray = array();
         for($i = 0; $i < count($result); $i++) {
@@ -201,6 +239,7 @@ class Inventory extends CI_Controller{
         $distributor = $this->input->post("distributor");
         $quantity = $this->input->post("quantity");
         $demand = $this->input->post("demand");
+        $storeId = $this->input->post("store_id");
 
         $inventory = new ParseObject("Inventory");
         
@@ -210,11 +249,87 @@ class Inventory extends CI_Controller{
         $inventory->set("inventoryDistributor", $distributor);
         $inventory->set("inventoryQuantity", (int)$quantity);
         $inventory->set("inventoryDemand", (int)$demand);
+        $inventory->set("createdBy", $this->session->userdata['permission']);
+        $inventory->set("storeId", $storeId);
+
         try {
             $inventory->save();
+            if ($this->session->userdata['permission'] == "bar") {
+                $alert = $name . " is now on tap @ " . $this->session->userdata['username'];
+            } else if ($this->session->userdata['permission'] == "brewery") {
+                $alert = $name . " is available @ " . $this->session->userdata['username'];
+            } else {
+                $alert = $name . " is now available at " . $this->session->userdata['username'] . "'s Liquors";
+            }
+
+            $query = new ParseQuery("_Installation");
+            $query->EqualTo("appName", 'NotiBrew');
+            $devices = $query->find(true);
+            // $query = ParseInstallation::query();
+            
+            for($i = 0; $i < count($devices); $i++) {
+                $object = $devices[$i];
+                $deviceToken = $object->get("deviceToken");
+                if ($deviceToken) {
+                    if (!$this->sendPushNotification($deviceToken, $alert)) {
+                        die("fail");
+                    }
+                }
+                
+            }
             redirect("inventory");
         } catch (ParseException $e) {
-            die(var_dump($e));
+            die(print_r($e));
         }
+    }
+
+    public function sendPushNotification($deviceToken, $message) {
+
+        $passphrase = 'Notibrew';
+        $ctx = stream_context_create();
+    
+        stream_context_set_option($ctx, 'ssl', 'local_cert', PEM_LOC);
+        
+        stream_context_set_option($ctx, 'ssl', 'passphrase', $passphrase);
+        
+        // Open a connection to the APNS server
+        //'ssl://gateway.push.apple.com:2195'
+        // tls://gateway.sandbox.push.apple.com:2195
+
+        // $fp = stream_socket_client( 'ssl://gateway.push.apple.com:2195', $err, $errstr, 60, STREAM_CLIENT_CONNECT|STREAM_CLIENT_PERSISTENT, $ctx);
+
+        $fp = stream_socket_client( 'tls://gateway.sandbox.push.apple.com:2195', $err, $errstr, 60, STREAM_CLIENT_CONNECT|STREAM_CLIENT_PERSISTENT, $ctx);
+       
+        if (!$fp)
+        {
+            echo "Error Ocurred";
+            return false;
+        } else {
+            $body['aps'] = array(
+                    'alert' => array(
+                    'title'=>'Alert title',
+                    'body'=>$message
+                ),
+                'sound' => 'BeerSound.wav',
+                'Person' =>array(
+                    'userId'=>'test_id12345',
+                    'name'=>'Test name push',
+                    'image'=>'Test image'
+                )
+            );
+             
+             $body['message'] = 'notification_type';
+             // Encode the payload as JSON
+             $payload = json_encode($body);
+             
+             // Build the binary notification
+             $msg = chr(0) . pack('n', 32) . pack('H*', $deviceToken) . pack('n', strlen($payload)) . $payload;
+             
+             // Send it to the server
+             $result = fwrite($fp, $msg, strlen($msg));
+             
+             fclose($fp);
+             return true;
+         }
     }
 }
