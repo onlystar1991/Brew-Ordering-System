@@ -247,6 +247,7 @@ final class ParseClient
     $response = curl_exec($rest);
     $status = curl_getinfo($rest, CURLINFO_HTTP_CODE);
     $contentType = curl_getinfo($rest, CURLINFO_CONTENT_TYPE);
+    print_r($rest);echo "<br>";exit;
     if (curl_errno($rest)) {
       throw new ParseException(curl_error($rest), curl_errno($rest));
     }
