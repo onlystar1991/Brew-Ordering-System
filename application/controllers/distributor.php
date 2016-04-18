@@ -41,7 +41,6 @@ class Distributor extends CI_Controller {
         $this->load->helper('url');
         $this->load->library("pagination");
         $this->load->library("session");
-
     }
 
     public function index() {
@@ -51,9 +50,6 @@ class Distributor extends CI_Controller {
         }
 
         if ($this->session->userdata("permission") == "distributor") {
-            redirect('store');
-            exit;
-
             $all_deliveries = $this->getAllDeliveries();
 
             $result_array = array();
@@ -136,6 +132,12 @@ class Distributor extends CI_Controller {
             $distributor->distributor_id = $object->getObjectId();
 
             $distributor->distributor_name = $object->get("distributorName");
+
+            $distributor->distributor_location = $object->get("distributorLocation");
+            
+            $distributor->distributor_phone = $object->get("distributorPhone");
+            
+            $distributor->distributor_contact = $object->get("distributorContactName");
             
             $resultArray[] = $distributor;
         }
