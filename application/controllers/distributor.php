@@ -51,6 +51,9 @@ class Distributor extends CI_Controller {
         }
 
         if ($this->session->userdata("permission") == "distributor") {
+            redirect('store');
+            exit;
+
             $all_deliveries = $this->getAllDeliveries();
 
             $result_array = array();
