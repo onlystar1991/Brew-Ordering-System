@@ -1,4 +1,4 @@
-<div class="large-3 medium-3 column">
+<div id="menu-bar" class="column">
 <!-- #sidenav -->
 	<ul id="sidenav" class="tabs vertical">
 
@@ -14,6 +14,10 @@
 	        <a class="tab-orders" href="<?= base_url()?>order" title="Orders">
 	            <span class="icon"></span> Orders</a>
 	    </li>
+	    <li class="tab-title <?php echo ($this->data['page'] == 'dashboard')? 'active': ''; ?>">
+	        <a class="tab-dashboard" href="<?= base_url()?>dashboard" title="Dashboard">
+	            <span class="icon"></span> Dashboard</a>
+	    </li>
 	    <?php if ($this->session->userdata("permission") != "distributor") { ?>
 	    <li class="tab-title <?php echo ($this->data['page'] == 'distributor')? 'active': ''; ?>">
 	        <a class="tab-distributor" href="<?= base_url()?>distributor" title="Distributor">
@@ -21,6 +25,20 @@
 	        </a>
 	    </li>
 	    <?php } ?>
+	    <li class="tab-title <?php echo ($this->data['page'] == 'marketing')? 'active': ''; ?>">
+	        <a class="tab-marketing" href="<?= base_url()?>marketing" title="Marketing">
+	            <span class="icon"></span> Marketing</a>
+	    </li>
+	</ul>
+	<ul id="sidebottomnav" class="tabs vertical">
+		<li class="tab-title <?php echo ($this->data['page'] == 'chat')? 'active': ''; ?>">
+	        <a class="tab-chat" href="<?= base_url()?>chat" title="Chat">
+	            <span class="icon"></span> Chat</a>
+	    </li>
+	    <li class="tab-title <?php echo ($this->data['page'] == 'help')? 'active': ''; ?>">
+	        <a class="tab-help" href="<?= base_url()?>help" title="Help">
+	            <span class="icon"></span> Help</a>
+	    </li>
 	</ul>
 <!-- end of #sidenav -->
 </div>

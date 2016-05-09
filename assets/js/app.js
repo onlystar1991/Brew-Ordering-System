@@ -64,23 +64,23 @@
      * @return void
      */
     function initSidenavMinHeight() {
-        var header = document.getElementById('header');
-        var headerHeight = 0;
-        var sidenav = document.getElementById('sidenav');
-        var sidenavMinHeight = 0;
+        // var header = document.getElementById('header');
+        // var headerHeight = 0;
+        // var sidenav = document.getElementById('sidenav');
+        // var sidenavMinHeight = 0;
         
-        // if header is undefined
-        if(!header) return; // exit function
+        // // if header is undefined
+        // if(!header) return; // exit function
+        
+        // // ... proceed
+        // headerHeight = $(header).height(); // get header height
+        // sidenavMinHeight = getUnusedSpace(headerHeight); // get the unused height of the window
+        
+        // // if sidenav is undefined
+        // if(!sidenav) return; // exit function
         
         // ... proceed
-        headerHeight = $(header).height(); // get header height
-        sidenavMinHeight = getUnusedSpace(headerHeight); // get the unused height of the window
-        
-        // if sidenav is undefined
-        if(!sidenav) return; // exit function
-        
-        // ... proceed
-        $(sidenav).css('minHeight', sidenavMinHeight + 'px');
+        //$(sidenav).css('minHeight', sidenavMinHeight + 'px');
     }
     
     /*

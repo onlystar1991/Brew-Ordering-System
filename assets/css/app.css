@@ -192,7 +192,7 @@ select {
 
 .row {
   margin: 0 auto;
-  max-width: 81.25rem;
+  /*max-width: 81.25rem;*/
   width: 100%; }
   .row:before, .row:after {
     content: " ";
@@ -4126,7 +4126,7 @@ table {
       color: #efefef;
       font-family: 'PT Sans Narrow', sans-serif, "Helvetica Neue", Helvetica, Roboto;
       font-size: 1rem;
-      padding: 1rem 2rem; }
+      padding: 0.2rem 2rem 0.8rem; }
       .tabs dd > a:hover, .tabs .tab-title > a:hover {
         background-color: #ebebeb; }
     .tabs dd.active a, .tabs .tab-title.active a {
@@ -6464,6 +6464,18 @@ select {
   background-position: 30px -160px;
   transition: background-position-x .1s ease; }
 
+.tab-chat:hover .icon {
+  background-position-x: -3px; }
+.tab-chat .icon {
+  background-position: 30px -192px;
+  transition: background-position-x .1s ease; }
+
+.tab-help:hover .icon {
+  background-position-x: -3px; }
+.tab-help .icon {
+  background-position: 30px -223px;
+  transition: background-position-x .1s ease; }
+
 .dd.active .tab-marketing .icon, .tab-title.active .tab-marketing .icon {
   background-position-x: -3px; }
 
@@ -6805,4 +6817,63 @@ ul.tsc_pagination li strong {
 }
 #file-upload-dialog {
   font-size: 15px;
+}
+
+
+/*****************************************
+ * Common PAGE                            *
+ *****************************************/
+
+.notibrew-logo {
+  padding: 21px 0;
+}
+
+#main {
+  position:relative;
+  height:100%;
+  padding-top:70px;
+}
+
+#menu-bar {
+  width:200px;
+  position:absolute;
+  top:70px;
+  bottom:0;
+  left:0;
+  z-index:1000;
+}
+
+#main > .large-12 {
+  padding-left:200px;
+  position:relative;
+  z-index:100;
+}
+
+.f-height {
+  height:100%!important;
+}
+
+#header {
+  position:absolute;
+  width:100%;
+  top:0;
+  z-index:1001;
+  height:70px;
+}
+
+#sidebottomnav {
+  position:absolute;
+  bottom:0;
+  width:100%;
+  left:0;
+  margin-bottom:0!important;
+}
+
+#sidebottomnav .tab-title {
+  position: static;
+  display:block;
+}
+
+#sidebottomnav .tab-title > a {
+    border-top: 1px solid #555657;
 }

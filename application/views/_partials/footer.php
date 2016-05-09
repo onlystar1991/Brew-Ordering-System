@@ -13,7 +13,8 @@
 		$datas = $this->data['orders'];
 		$jan = 0; $feb = 0; $mar = 0; $apr = 0; $may = 0; $jun = 0; $jul = 0; $aug = 0; $sep = 0; $oct = 0; $nov = 0; $dec = 0;
 		foreach ($datas as $data) {
-			$month = split("-", $data->order_date)[1];
+			$month_arr = explode("-", $data->order_date);
+			$month = $month_arr[1];
 			switch ($month) {
 			    case "01":
 			        $jan++;

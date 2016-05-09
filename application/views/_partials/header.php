@@ -16,9 +16,9 @@
     <script type="text/javascript" src="<?= asset_base_url()?>/js/script.js"></script>
 </head>
 <body>
-	<div id="container">
-    <div class="row">
-        <div class="large-12 column">
+	<div id="container" class="f-height">
+    <div class="row f-height">
+        <div class="large-12 column f-height">
             <!-- #header -->
             <header id="header">
                 <nav class="top-bar" data-topbar role="navigation">
@@ -26,7 +26,7 @@
                         <li class="name">
                             <h1>
                                 <a href="#" title="notibrew">
-                                    <img src="<?php echo base_url(); ?>assets/images/logo.png" alt="notibrew"/>
+                                    <img class="notibrew-logo" src="<?php echo base_url(); ?>assets/images/logo.png" alt="notibrew"/>
                                 </a>
                             </h1>
                         </li>

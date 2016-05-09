@@ -5,7 +5,7 @@
 	    <?php
             $this->load->view("_partials/side_bar.php");
         ?>
-	    <div class="large-9 medium-8 column">
+	    <div class="large-12 medium-8 column">
 	        <!-- Tabs content -->
 	        <div id="main-content" class="tabs-content">
 	            
@@ -23,16 +23,19 @@
                     </article>
                     <form id="addBeerFrom" action="<?php echo base_url();?>inventory/saveBeer" method="post" >
                         <table class="table table--dsh" id="inventory">
-                            <tr>
-                                <th class="table--dsh__header">SKU</th>
-                                <th class="table--dsh__header">Price</th>
-                                <th class="table--dsh__header">Name</th>
-                                <th class="table--dsh__header">Distributor</th>
-                                <th class="table--dsh__header">Quantity</th>
-                                <th class="table--dsh__header">Demand</th>
-                                <th class="table--dsh__header">Status</th>
-                                <th class="table--dsh__header"></th>
-                            </tr>
+                            <thead>
+                                <tr>
+                                    <th class="table--dsh__header">SKU</th>
+                                    <th class="table--dsh__header">Price</th>
+                                    <th class="table--dsh__header">Name</th>
+                                    <th class="table--dsh__header">Distributor</th>
+                                    <th class="table--dsh__header">Quantity</th>
+                                    <th class="table--dsh__header">Demand</th>
+                                    <th class="table--dsh__header">Status</th>
+                                    <th class="table--dsh__header"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
                             <?php
                             $str = "";
                         	foreach($this->data['inventories'] as $inventory) {
@@ -77,11 +80,11 @@
                         		<?php
                         	}
                             ?>
-                            
+                            </tbody>
                         </table>
                     </form>
                     <!-- Stores pagination -->
-                        <a class="button alert" href="<?php echo base_url();?>inventory/edit/<?php echo $str;?>" title="Edit" style="margin-left: 76%;position: absolute;"><i class="fa fa-pencil"></i> Edit</a>
+                        <a class="button alert" href="<?php echo base_url();?>inventory/edit/<?php echo $str;?>" title="Edit" style="right:2.125rem;position: absolute;"><i class="fa fa-pencil"></i> Edit</a>
                         
                         <div id="pagination" class="pagination-centered" style="width: auto; height: auto;">
                             <ul class="tsc_pagination" style="height: auto; width: 50%; margin: auto;">

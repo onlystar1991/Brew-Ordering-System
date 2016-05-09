@@ -5,22 +5,23 @@
 	    <?php
 	    	$this->load->view("_partials/side_bar.php");
 	    ?>
-	    <div class="large-9 medium-8 column">
+	    <div class="large-12 medium-8 column">
 	        <!-- Tabs content -->
 	        <div id="main-content" class="tabs-content">
 	            <!-- #stores -->
 	            <div id="stores" class="content active">
 	                <table class="table table--dsh">
-	                    <tr>
-	                        <th class="table--dsh__header">Store name</th>
-	                        <th class="table--dsh__header">Address</th>
-	                        <th class="table--dsh__header">Hours of Operation</th>
-	                        <th class="table--dsh__header">Pictures/Logo</th>
-	                        <th class="table--dsh__header">Description</th>
-	                        <th class="table--dsh__header" style="width: 85px; text-align: center;">Action</th>
-	                    </tr>
-	                    
-	                    
+	                	<thead>
+		                    <tr>
+		                        <th class="table--dsh__header">Store name</th>
+		                        <th class="table--dsh__header">Address</th>
+		                        <th class="table--dsh__header">Hours of Operation</th>
+		                        <th class="table--dsh__header">Pictures/Logo</th>
+		                        <th class="table--dsh__header">Description</th>
+		                        <th class="table--dsh__header" style="width: 85px; text-align: center;">Action</th>
+		                    </tr>
+	                    </thead>
+	                    <tbody>
                     	<?php
                     		foreach ($this->data['stores'] as $store) {
                 			?>

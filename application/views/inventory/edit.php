@@ -8,7 +8,7 @@
 	    	$this->load->view("_partials/side_bar.php");
 	    ?>
 
-	    <div class="large-9 medium-8 column">
+	    <div class="large-12 medium-8 column">
 	        <!-- Tabs content -->
 	        <div id="main-content" class="tabs-content">
 	            <!-- #stores -->
@@ -19,15 +19,15 @@
             			
                         <table class="table table--dsh">
                         	<thead>
-	                        <tr>
-	                            <th class="table--dsh__header">SKU</th>
-	                            <th class="table--dsh__header">Price</th>
-	                            <th class="table--dsh__header">Name</th>
-	                            <th class="table--dsh__header">Distributor</th>
-	                            <th class="table--dsh__header">Quantity</th>
-	                            <th class="table--dsh__header">Demand</th>
-	                            <th class="table--dsh__header" style="width: 160px; text-align: center;"></th>
-	                        </tr>
+		                        <tr>
+		                            <th class="table--dsh__header">SKU</th>
+		                            <th class="table--dsh__header">Price</th>
+		                            <th class="table--dsh__header">Name</th>
+		                            <th class="table--dsh__header">Distributor</th>
+		                            <th class="table--dsh__header">Quantity</th>
+		                            <th class="table--dsh__header">Demand</th>
+		                            <th class="table--dsh__header" style="width: 160px; text-align: center;"></th>
+		                        </tr>
 	                        </thead>
 	                        <tbody>
 	                        	<?php
