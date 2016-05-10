@@ -31,7 +31,6 @@ class Chat extends CI_Controller{
         parent::__construct();
         //TODO:  Add extra constructor Code
         ParseClient::initialize(self::$app_id, self::$rest_key, self::$master_key);
-        $this->load->model('morder');
         $this->load->library("session");
         $this->load->helper('url');
 
@@ -42,46 +41,10 @@ class Chat extends CI_Controller{
         if (!$this->session->userdata('isSigned')) {
             redirect('auth/index');
         }
-        
-        $all_orders = $this->getOrderlist();
-        
-        $this->data['total_count'] = count($all_orders);
 
-        $this->data['orders'] = $all_orders;
+        $this->data['page'] = "chat";
 
-        $this->data['page'] = "dashboard";
-
-        $this->load->view('dashboard/index', $data);
+        $this->load->view('chat/index', $data);
     }
 
-
-    private function getOrderlist() {
-       
-        $query = new ParseQuery("MyOrders");
-
-        $result = $query->find();
-        $resultArray = array();
-
-        
-        for($i = 0; $i < count($result); $i++) {
-            
-            $object = $result[$i];
-
-            $order = new MOrder();
-
-            $order->order_id = $object->getObjectId();
-
-            $order->order_customer_name = $object->get("beerCreator");
-            
-            $order->order_payment_method = $object->get("cardType");
-
-            $order->order_date = $object->getCreatedAt()->format('Y-m-d H:i:s');
-
-            $order->order_detail = $object->get("beerDescription");
-
-            $resultArray[] = $order;
-        }
-
-        return $resultArray;
-    }
 }
