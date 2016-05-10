@@ -6469,12 +6469,16 @@ select {
 .tab-chat .icon {
   background-position: 30px -192px;
   transition: background-position-x .1s ease; }
+.dd.active .tab-chat .icon, .tab-title.active .tab-chat .icon {
+  background-position-x: -3px; }
 
 .tab-help:hover .icon {
   background-position-x: -3px; }
 .tab-help .icon {
   background-position: 30px -223px;
   transition: background-position-x .1s ease; }
+.dd.active .tab-help .icon, .tab-title.active .tab-help .icon {
+  background-position-x: -3px; }
 
 .dd.active .tab-marketing .icon, .tab-title.active .tab-marketing .icon {
   background-position-x: -3px; }

@@ -27,11 +27,11 @@ define('DIR_WRITE_MODE', 0777);
 |
 */
 
-define('PARSE_SDK_INC', $_SERVER['DOCUMENT_ROOT'].'/NotiBrew/parse-php-sdk-master/autoload.php');
+define('PARSE_SDK_INC', $_SERVER['DOCUMENT_ROOT'].'/parse-php-sdk-master/autoload.php');
 //   /intense-plains-3648
 
-define('PEM_DEV_LOC', $_SERVER['DOCUMENT_ROOT'].'/NotiBrew/application/controllers/NotibrewDev.pem');
-define('PEM_LOC', $_SERVER['DOCUMENT_ROOT'].'/NotiBrew/application/controllers/Notibrew.pem');
+define('PEM_DEV_LOC', $_SERVER['DOCUMENT_ROOT'].'/application/controllers/NotibrewDev.pem');
+define('PEM_LOC', $_SERVER['DOCUMENT_ROOT'].'/application/controllers/Notibrew.pem');
 //   /intense-plains-3648
 
 define('FOPEN_READ',							'rb');
