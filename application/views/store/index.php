@@ -27,7 +27,7 @@
                 			?>
                 			<tr class="store">
                 				<td class="store__name">
-                					<a href="<?php echo base_url().'store/edit/'.$store->store_id; ?>" title="Top Hops Beer Shop">
+                					<a href="<?php echo base_url().'store/detail/'.$store->store_id; ?>" title="Top Hops Beer Shop">
                 						<?php echo $store->store_name; ?>
 		                        	</a>
 		                       	</td>
@@ -47,7 +47,9 @@
 		                            </a> <!-- end of edit -->
 
 		                            <!-- Remove -->
-		                            <a class="action__remove hvr-bob" href="<?php echo base_url().'store/delete/'.$store->store_id; ?>" title="Delete store">
+		                            <a class="action__remove hvr-bob" href="#" data-reveal-id='deleteStore<?php echo $store->store_id;?>' title="Delete store">
+
+		                            	<!-- base_url().'store/delete/'.$store->store_id; -->
 		                                <i class="fa fa-times"></i>
 		                            </a> <!-- end of remove -->
 		                        </td>
@@ -75,7 +77,33 @@
 	        <!-- end of tabs content -->
 	    </div>
 	</main>
+<?php
+        foreach ($this->data['stores'] as $store) {
+            ?>
+	<div id="deleteStore<?php echo $store->store_id;?>" class="reveal-modal text-center" data-reveal aria-labelledby="storeTitle"
+        aria-hidden="true" role="dialog">
+        
+        <!-- Store icon: favicon.png -->
+        <img class="favicon" src="<?php echo asset_base_url();?>/images/favicon.png" alt="notibrew" title="notibrew"/> <!-- end of store icon -->
+        
+        <!-- Title message -->
+        <h4 id="storeTitle" class="title">Are you sure you want to delete this store?</h4> <!-- end of title message -->
+        <p></p>
+        <ul class="no-bullet inline-list action-group">
+            <!-- Delete action -->
+            <li>
+                <a href="<?php echo base_url().'store/delete/'.$store->store_id;?>" class="button" title="Yes">YES</a>
+            </li> <!-- end of finalize action -->
 
+            <!-- Cancel action -->
+            <li>
+                <a class="button secondary close-reveal-modal" href="#" title="No">NO</a>
+            </li> <!-- end of order action -->
+        </ul> <!-- end of actions -->
+    </div>
+            <?php
+        }
+    ?>
 <?php
 	$this->load->view("_partials/footer.php");
 ?>

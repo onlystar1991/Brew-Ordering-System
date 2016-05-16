@@ -3798,7 +3798,7 @@ ul.pagination {
         width: 100%; } }
   .reveal-modal.toback {
     z-index: 1003; }
-  .reveal-modal .close-reveal-modal {
+  .reveal-modal .close-reveal-modal-x {
     color: #AAAAAA;
     cursor: pointer;
     font-size: 2.5rem;
@@ -3806,7 +3806,8 @@ ul.pagination {
     line-height: 1;
     position: absolute;
     top: 0.625rem;
-    right: 1.375rem; }
+    right: 1.375rem; 
+  }
 
 .side-nav {
   display: block;
@@ -6231,7 +6232,7 @@ ol {
   .tabs.vertical dd > a, .tabs.vertical .tab-title > a {
     border-bottom: 1px solid #555657; }
     .tabs.vertical dd > a:hover, .tabs.vertical .tab-title > a:hover {
-      border-bottom: 0; }
+      border-bottom: 1px solid transparent }
   .tabs.vertical dd.active a, .tabs.vertical .tab-title.active a {
     border-left: 4px solid #eb6101;
     border-bottom: 0; }
@@ -6541,7 +6542,9 @@ select {
     position: absolute;
     left: 0; }
 .store-details .store__address::before {
-  content: '\f041'; }
+  content: '\f041';
+  top: 6px;
+  left: 3px; }
 .store-details .store__schedule::before {
   content: '\f017'; }
 .store-details .store__schedule li {
@@ -6851,6 +6854,8 @@ ul.tsc_pagination li strong {
   padding-left:200px;
   position:relative;
   z-index:100;
+  height:100%;
+  overflow-y: auto;
 }
 
 .f-height {

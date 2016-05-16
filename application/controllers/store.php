@@ -135,20 +135,67 @@ class Store extends CI_Controller{
             $mstore->store_from_sunday = $store->get("fromSunday");
             $mstore->store_to_sunday = $store->get("toSunday");
 
+            // print_r($store->get("storeIcon"));exit;
             if ($store->get("storeIcon")) {
-                $mstore->store_logo = $store->get("storeIcon")->getURL();
+                $mstore->store_logo = $store->get("storeIcon");
             }
             if ($store->get("storeImage1")) {
-                $mstore->store_image1 =  $store->get("storeImage1")->getURL();    
+                $mstore->store_image1 =  $store->get("storeImage1");    
             }
             if ($store->get("storeImage2")) {
-                $mstore->store_image2 =  $store->get("storeImage2")->getURL();    
+                $mstore->store_image2 =  $store->get("storeImage2");    
             }
             
             $this->data['store'] = $mstore;
+            $this->data['page'] = "store";
             $this->load->view("store/edit", $data);
         }
     }
+
+    public function detail($sId = "") {
+        if (!$sId) {
+            redirect("store/");
+        } else {
+            $query = new ParseQuery("Stores");
+            $store = $query->get($sId);
+            $mstore = new MStore();
+
+            $mstore->store_id = $store->getObjectId();
+            $mstore->store_name = $store->get("storeName");
+            $mstore->store_address = $store->get("storeAddress");
+            $mstore->store_from_monday = $store->get("fromMonday");
+            $mstore->store_to_monday = $store->get("toMonday");
+
+            $mstore->store_from_tuesday = $store->get("fromTuesday");
+            $mstore->store_to_tuesday = $store->get("toTuesday");
+            $mstore->store_from_wednesday = $store->get("fromWednesday");
+            $mstore->store_to_wednesday = $store->get("toWednesday");
+            $mstore->store_from_thursday = $store->get("fromThursday");
+            $mstore->store_to_thursday = $store->get("toThursday");
+            $mstore->store_from_friday = $store->get("fromFriday");
+            $mstore->store_to_friday = $store->get("toFriday");
+            $mstore->store_from_saturday  = $store->get("fromSaturday");;
+            $mstore->store_to_saturday  = $store->get("toSaturday");;
+            $mstore->store_from_sunday = $store->get("fromSunday");
+            $mstore->store_to_sunday = $store->get("toSunday");
+
+            // print_r($store->get("storeIcon"));exit;
+            if ($store->get("storeIcon")) {
+                $mstore->store_logo = $store->get("storeIcon");
+            }
+            if ($store->get("storeImage1")) {
+                $mstore->store_image1 =  $store->get("storeImage1");    
+            }
+            if ($store->get("storeImage2")) {
+                $mstore->store_image2 =  $store->get("storeImage2");    
+            }
+            
+            $this->data['store'] = $mstore;
+            $this->data['page'] = "store";
+            $this->load->view("store/detail", $data);
+        }
+    }
+
     public function save() {
         
         // var_dump($_FILES);

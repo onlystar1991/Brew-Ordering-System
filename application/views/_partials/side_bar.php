@@ -1,7 +1,6 @@
 <div id="menu-bar" class="column">
 <!-- #sidenav -->
 	<ul id="sidenav" class="tabs vertical">
-
 	    <li class="tab-title <?php echo ($this->data['page'] == 'store')? 'active': ''; ?>">
 	        <a class="tab-stores" href="<?= base_url()?>store" title="Stores">
 	            <span class="icon"></span> Stores</a>
