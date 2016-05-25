@@ -65,7 +65,7 @@ $autoload['libraries'] = array();
 */
 
 //$autoload['helper'] = array();
-$autoload['helper'] = array('url', 'assets');
+$autoload['helper'] = array('url', 'assets', 'permission');
 
 /*
 | -------------------------------------------------------------------

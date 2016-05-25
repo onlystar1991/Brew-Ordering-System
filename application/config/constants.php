@@ -46,3 +46,35 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
+
+/* User Roles */
+define('UR_ADMIN',       'admin');
+define('UR_RETAILER',    'retailer');
+define('UR_BAR',         'bar');
+define('UR_BREWERY',     'brewery');
+define('UR_DISTRIBUTOR', 'distributor');
+
+/* User Privileges */
+define('UP_ALL',					11000);
+
+define('UP_STORE_ALL',           	10100);
+define('UP_STORE_VIEW',          	10101);
+
+define('UP_INVENTORY_ALL',       	10110);
+define('UP_INVENTORY_VIEW',      	10111);
+define('UP_INVENTORY_ORDER_DENY', 	10112);
+
+define('UP_ORDER_ALL',       		10120);
+define('UP_ORDER_VIEW',      		10121);
+define('UP_ORDER_EDIT_DENY', 		10122);
+define('UP_ORDER_APPROVE_DENY', 	10123);
+define('UP_ORDER_FINAL_DENY', 		10124);
+define('UP_ORDER_DETAIL_DENY', 		10125);
+
+define('UP_DASHBOARD_ALL',			10130);
+
+define('UP_DISTRIBUTOR_ALL',		10140);
+
+define('UP_DELIVERY_ALL',			10150);
+
+define('UP_MARKETING_ALL',			10160);
