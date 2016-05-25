@@ -43,6 +43,7 @@ class Inventory extends CI_Controller{
             redirect('auth/index');
         }
         
+        $permission = $this->session->userdata('permission');
         $all_inventories = $this->getInventorylist();
         $result_array = array();
         $this->data['inventories'] = array();

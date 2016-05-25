@@ -78,20 +78,23 @@ class Store extends CI_Controller{
         $query = new ParseQuery("Stores");
         $result = $query->find();
         $resultArray = array();
+        $userid = $this->session->userdata('userid');
         for($i = 0; $i < count($result); $i++) {
             $object = $result[$i];
-            $store = new MStore();
-            $store->store_id = $object->getObjectId();
-            $store->store_name = $object->get("storeName");
-            $store->store_address = $object->get("storeAddress");
-            $store->store_from_monday = $object->get("fromMonday");
-            $store->store_to_monday = $object->get("toMonday");
+            if ($object->get("storeOwner") == $userid || user_can(UP_ALL)) {
+                $store = new MStore();
+                $store->store_id = $object->getObjectId();
+                $store->store_name = $object->get("storeName");
+                $store->store_address = $object->get("storeAddress");
+                $store->store_from_monday = $object->get("fromMonday");
+                $store->store_to_monday = $object->get("toMonday");
 
-            if ($object->get("storeIcon")) {
-                $store->store_logo = $object->get("storeIcon");
+                if ($object->get("storeIcon")) {
+                    $store->store_logo = $object->get("storeIcon");
+                }
+                $store->store_description = $object->get("storeDescription");
+                $resultArray[] = $store;
             }
-            $store->store_description = $object->get("storeDescription");
-            $resultArray[] = $store;
         }
         return $resultArray;
     }
@@ -108,6 +111,11 @@ class Store extends CI_Controller{
         }
     }
 
+    public function add() {
+        $this->data['page'] = "store";
+        $this->load->view("store/add");
+    }
+
     public function edit($sId = "") {
         if (!$sId) {
             redirect("store/");
@@ -119,6 +127,7 @@ class Store extends CI_Controller{
             $mstore->store_id = $store->getObjectId();
             $mstore->store_name = $store->get("storeName");
             $mstore->store_address = $store->get("storeAddress");
+            $mstore->store_description = $store->get("storeDescription");
             $mstore->store_from_monday = $store->get("fromMonday");
             $mstore->store_to_monday = $store->get("toMonday");
 
@@ -163,6 +172,7 @@ class Store extends CI_Controller{
             $mstore->store_id = $store->getObjectId();
             $mstore->store_name = $store->get("storeName");
             $mstore->store_address = $store->get("storeAddress");
+            $mstore->store_description = $store->get("storeDescription");
             $mstore->store_from_monday = $store->get("fromMonday");
             $mstore->store_to_monday = $store->get("toMonday");
 
@@ -198,61 +208,124 @@ class Store extends CI_Controller{
 
     public function save() {
         
-        // var_dump($_FILES);
-        $query = new ParseQuery("Stores");
-        // $store = $query->get($sId);
-        $store = $query->get($this->input->post("store_id"));
+        $store_id = $this->input->post("store_id");
 
-        $store->set("storeName", $this->input->post("storeName"));
-        $store->set("storeAddress", $this->input->post("storeAddress"));
-        $store->set("storeDescription", $this->input->post("storeDescripton"));
-        $store->set("fromMonday", $this->input->post("moFrom"));
-        $store->set("toMonday", $this->input->post("moTo"));
-        $store->set("fromTuesday", $this->input->post("tuFrom"));
-        $store->set("toTuesday", $this->input->post("tuTo"));
-        $store->set("fromWednesday", $this->input->post("weFrom"));
-        $store->set("toWednesday", $this->input->post("weTo"));
-        $store->set("fromThursday", $this->input->post("thFrom"));
-        $store->set("toThursday", $this->input->post("thTo"));
-        $store->set("fromFriday", $this->input->post("frFrom"));
-        $store->set("toFriday", $this->input->post("frTo"));
-        $store->set("fromSaturday", $this->input->post("saFrom"));
-        $store->set("toSaturday", $this->input->post("saTo"));
-        $store->set("fromSunday", $this->input->post("suFrom"));
-        $store->set("toSunday", $this->input->post("suTo"));
+        if ($store_id == null) {
+            // var_dump($_FILES);
+            $store = new ParseObject("Stores");
+            
+            $store->set("storeName", $this->input->post("storeName"));
+            $store->set("storeAddress", $this->input->post("storeAddress"));
+            $store->set("storeDescription", $this->input->post("storeDescripton"));
+            $store->set("fromMonday", $this->input->post("moFrom"));
+            $store->set("toMonday", $this->input->post("moTo"));
+            $store->set("fromTuesday", $this->input->post("tuFrom"));
+            $store->set("toTuesday", $this->input->post("tuTo"));
+            $store->set("fromWednesday", $this->input->post("weFrom"));
+            $store->set("toWednesday", $this->input->post("weTo"));
+            $store->set("fromThursday", $this->input->post("thFrom"));
+            $store->set("toThursday", $this->input->post("thTo"));
+            $store->set("fromFriday", $this->input->post("frFrom"));
+            $store->set("toFriday", $this->input->post("frTo"));
+            $store->set("fromSaturday", $this->input->post("saFrom"));
+            $store->set("toSaturday", $this->input->post("saTo"));
+            $store->set("fromSunday", $this->input->post("suFrom"));
+            $store->set("toSunday", $this->input->post("suTo"));
+            $store->set("storeOwner", $this->session->userdata('userid'));
+            $store->set("storeType", "Store");
 
-        if ($this->input->post("store_icon_delete") == 1) {
-            $store->set("storeIcon", null);
-        }
-        if ($this->input->post("store_image1_delete") == 1) {
-            $store->set("storeImage1", null);
-        }
-        if ($this->input->post("store_image2_delete") == 1) {
-            $store->set("storeImage2", null);
-        }
+            if ($this->input->post("store_icon_delete") == 1) {
+                $store->set("storeIcon", null);
+            }
+            if ($this->input->post("store_image1_delete") == 1) {
+                $store->set("storeImage1", null);
+            }
+            if ($this->input->post("store_image2_delete") == 1) {
+                $store->set("storeImage2", null);
+            }
 
-        if ($_FILES['store_icon']['name']) {
-            $store_icon = ParseFile::createFromData(file_get_contents($_FILES['store_icon']['tmp_name']), $_FILES['store_icon']['name']);
-            $store_icon->save();
-            $store->set("storeIcon", $store_icon);
-        }
+            if ($_FILES['store_icon']['name']) {
+                $store_icon = ParseFile::createFromData(file_get_contents($_FILES['store_icon']['tmp_name']), $_FILES['store_icon']['name']);
+                $store_icon->save();
+                $store->set("storeIcon", $store_icon);
+            }
 
-        if ($_FILES['store_image1']['name']) {
-            $store_image1 = ParseFile::createFromData(file_get_contents($_FILES['store_image1']['tmp_name']), $_FILES['store_image1']['name']);
-            $store_image1->save();
-            $store->set("storeImage1", $store_image1);
-        }
-        if ($_FILES['store_image2']['name']) {
-            $store_image2 = ParseFile::createFromData(file_get_contents($_FILES['store_image2']['tmp_name']), $_FILES['store_image2']['name']);
-            $store_image2->save();
-            $store->set("storeImage2", $store_image2);
-        }
+            if ($_FILES['store_image1']['name']) {
+                $store_image1 = ParseFile::createFromData(file_get_contents($_FILES['store_image1']['tmp_name']), $_FILES['store_image1']['name']);
+                $store_image1->save();
+                $store->set("storeImage1", $store_image1);
+            }
 
-        try {
-            $store->save();
-            redirect("store/");
-        } catch (ParseException $ex) {
-            die("Exception Occured :".$ex->getMessage());
+            if ($_FILES['store_image2']['name']) {
+                $store_image2 = ParseFile::createFromData(file_get_contents($_FILES['store_image2']['tmp_name']), $_FILES['store_image2']['name']);
+                $store_image2->save();
+                $store->set("storeImage2", $store_image2);
+            }
+
+            try {
+                $store->save();
+                redirect("store/");
+            } catch (ParseException $ex) {
+                die("Exception Occured :".$ex->getMessage());
+            }
+
+        } else {
+            // var_dump($_FILES);
+            $query = new ParseQuery("Stores");
+            // $store = $query->get($sId);
+            $store = $query->get($this->input->post("store_id"));
+
+            $store->set("storeName", $this->input->post("storeName"));
+            $store->set("storeAddress", $this->input->post("storeAddress"));
+            $store->set("storeDescription", $this->input->post("storeDescripton"));
+            $store->set("fromMonday", $this->input->post("moFrom"));
+            $store->set("toMonday", $this->input->post("moTo"));
+            $store->set("fromTuesday", $this->input->post("tuFrom"));
+            $store->set("toTuesday", $this->input->post("tuTo"));
+            $store->set("fromWednesday", $this->input->post("weFrom"));
+            $store->set("toWednesday", $this->input->post("weTo"));
+            $store->set("fromThursday", $this->input->post("thFrom"));
+            $store->set("toThursday", $this->input->post("thTo"));
+            $store->set("fromFriday", $this->input->post("frFrom"));
+            $store->set("toFriday", $this->input->post("frTo"));
+            $store->set("fromSaturday", $this->input->post("saFrom"));
+            $store->set("toSaturday", $this->input->post("saTo"));
+            $store->set("fromSunday", $this->input->post("suFrom"));
+            $store->set("toSunday", $this->input->post("suTo"));
+
+            if ($this->input->post("store_icon_delete") == 1) {
+                $store->set("storeIcon", null);
+            }
+            if ($this->input->post("store_image1_delete") == 1) {
+                $store->set("storeImage1", null);
+            }
+            if ($this->input->post("store_image2_delete") == 1) {
+                $store->set("storeImage2", null);
+            }
+
+            if ($_FILES['store_icon']['name']) {
+                $store_icon = ParseFile::createFromData(file_get_contents($_FILES['store_icon']['tmp_name']), $_FILES['store_icon']['name']);
+                $store_icon->save();
+                $store->set("storeIcon", $store_icon);
+            }
+
+            if ($_FILES['store_image1']['name']) {
+                $store_image1 = ParseFile::createFromData(file_get_contents($_FILES['store_image1']['tmp_name']), $_FILES['store_image1']['name']);
+                $store_image1->save();
+                $store->set("storeImage1", $store_image1);
+            }
+            if ($_FILES['store_image2']['name']) {
+                $store_image2 = ParseFile::createFromData(file_get_contents($_FILES['store_image2']['tmp_name']), $_FILES['store_image2']['name']);
+                $store_image2->save();
+                $store->set("storeImage2", $store_image2);
+            }
+
+            try {
+                $store->save();
+                redirect("store/");
+            } catch (ParseException $ex) {
+                die("Exception Occured :".$ex->getMessage());
+            }
         }
     }
 }

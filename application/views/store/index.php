@@ -10,6 +10,18 @@
 	        <div id="main-content" class="tabs-content">
 	            <!-- #stores -->
 	            <div id="stores" class="content active">
+
+	            	<header class="store-action">
+                        <span class="h4">&nbsp;</span>
+                        
+                        <!-- Actions -->
+                        <ul class="no-bullet inline-list right">
+                            <li><a class="button secondary" id="addStoreButton" href="<?php echo base_url().'store/add/'; ?>" title="Add Store"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Store</a></li>
+                        </ul>
+                    </header>
+                    <article>
+                    </article>
+
 	                <table class="table table--dsh">
 	                	<thead>
 		                    <tr>

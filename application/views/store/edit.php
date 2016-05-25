@@ -318,8 +318,8 @@
                                 <div class="clearfix"></div> <!-- end of clearfix -->
 
                                 <!-- Store logo -->
-                                <div class="photo-wrapper" style="width: 100px; height: 80px;">
-                                    
+                                <div class="photo-wrapper">
+                                    <input type="text" value="Logo" style="border: 0px; padding-left: 0px; text-align: left !important; width: 277px; background: transparent;" disabled="disabled">
                                     <img class="th photo" id="img_store_logo" src="<?php echo $store->store_logo; ?>" style="max-width: 70px !important; max-height: 70px !important;" alt="" title="Top Hops Beer Shop"/>
                                     <br/>
                                     <!-- Filename -->
@@ -334,18 +334,21 @@
 
                                 <!-- Store photos -->
                                 <article class="store__photos">
+                                	<input type="text" value="Photos" style="border: 0px; padding-left: 0px; text-align: left !important; width: 277px; background: transparent;" disabled="disabled">
                                     <article class="photos">
-                                        <div class="photo-wrapper" style="width: 150px; min-height: 100px;">
+                                        <div class="photo-wrapper">
 											<img class="th photo" id="img_store_image1" src="<?php echo $store->store_image1; ?>" style="max-width: 150px !important; max-height: 250px !important;" alt=""/>
+											<br/>
                                             <!-- Filename -->
                                              <span class="photo-label" id="image1_title"><?php $res = explode("-", $store->store_image1); echo $res[count($res)-1]; ?></span> <!-- end of filename -->
                                              <!-- Delete action -->
                                              <a href="#" id="delete_store_image1" title="Delete (filename goes here)"><i class="fa fa-times"></i></a>
                                         </div> 
 
-                                        <div class="photo-wrapper" style="width: 150px; min-height: 100px;">
+                                        <div class="photo-wrapper">
                                         	
-                                            <img class="th photo" id="img_store_image2" src="<?php echo $store->store_image2; ?>" style="max-width: 150px !important; max-height: 250px !important;" alt=""/><br/>
+                                            <img class="th photo" id="img_store_image2" src="<?php echo $store->store_image2; ?>" style="max-width: 150px !important; max-height: 250px !important;" alt=""/>
+                                            <br/>
                                             <!-- Filename -->
                                             <span class="photo-label" id="image2_title"><?php $res = explode("-", $store->store_image2); echo $res[count($res)-1]; ?></span>
                                              <!-- Delete action -->

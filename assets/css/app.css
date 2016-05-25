@@ -6418,7 +6418,8 @@ select {
   background-position-x: -6px; }
 .tab-stores .icon {
   background-position: 26px 0;
-  transition: background-position-x .1s ease; }
+  /*transition: background-position-x .1s ease; */
+}
 
 .dd.active .tab-stores .icon, .tab-title.active .tab-stores .icon {
   background-position-x: -6px; }
@@ -6427,7 +6428,8 @@ select {
   background-position-x: -2px; }
 .tab-inventory .icon {
   background-position: 30px -31px;
-  transition: background-position-x .1s ease; }
+  /*transition: background-position-x .1s ease; */
+}
 
 .dd.active .tab-inventory .icon, .tab-title.active .tab-inventory .icon {
   background-position-x: -2px; }
@@ -6436,7 +6438,8 @@ select {
   background-position-x: -3px; }
 .tab-orders .icon {
   background-position: 30px -64px;
-  transition: background-position-x .1s ease; }
+  /*transition: background-position-x .1s ease; */
+}
 
 .dd.active .tab-orders .icon, .tab-title.active .tab-orders .icon {
   background-position-x: -3px; }
@@ -6445,7 +6448,8 @@ select {
   background-position-x: -3px; }
 .tab-dashboard .icon {
   background-position: 30px -96px;
-  transition: background-position-x .1s ease; }
+  /*transition: background-position-x .1s ease; */
+}
 
 .dd.active .tab-dashboard .icon, .tab-title.active .tab-dashboard .icon {
   background-position-x: -3px; }
@@ -6454,7 +6458,8 @@ select {
   background-position-x: -3px; }
 .tab-distributor .icon {
   background-position: 30px -128px;
-  transition: background-position-x .1s ease; }
+  /*transition: background-position-x .1s ease; */
+}
 
 .dd.active .tab-distributor .icon, .tab-title.active .tab-distributor .icon {
   background-position-x: -3px; }
@@ -6463,13 +6468,15 @@ select {
   background-position-x: -3px; }
 .tab-marketing .icon {
   background-position: 30px -160px;
-  transition: background-position-x .1s ease; }
+  /*transition: background-position-x .1s ease; */
+}
 
 .tab-chat:hover .icon {
   background-position-x: -3px; }
 .tab-chat .icon {
   background-position: 30px -192px;
-  transition: background-position-x .1s ease; }
+  /*transition: background-position-x .1s ease; */
+}
 .dd.active .tab-chat .icon, .tab-title.active .tab-chat .icon {
   background-position-x: -3px; }
 
@@ -6477,7 +6484,8 @@ select {
   background-position-x: -3px; }
 .tab-help .icon {
   background-position: 30px -223px;
-  transition: background-position-x .1s ease; }
+  /*transition: background-position-x .1s ease; */
+}
 .dd.active .tab-help .icon, .tab-title.active .tab-help .icon {
   background-position-x: -3px; }
 
@@ -6589,11 +6597,17 @@ form#editStore .store__schedule {
 
 .photo-wrapper {
   display: inline-block;
-  text-align: center; }
+  text-align: left;
+  float:left; }
   .photo-wrapper .photo {
     margin-bottom: 0.75rem; }
   .photo-wrapper .photo-label {
-    font-weight: 400; }
+    font-weight: 400;
+    max-width:150px;
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:inline-block; }
 
 /*****************************************
  * INVENTORY PAGE                        *

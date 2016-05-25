@@ -61,7 +61,12 @@ class Auth extends CI_Controller{
                     $permission = $user->get("permission");
                     $username = $user->get("username");
                     
-                    redirect('/store', 'get');
+                    if (user_can(UP_STORE_ALL) || user_can(UP_STORE_VIEW))
+                        redirect('/store', 'get');
+                    else if (user_can(UP_INVENTORY_ALL) || user_can(UP_INVENTORY_VIEW))
+                        redirect('/inventory', 'get');
+                    else
+                        $this->load->view('auth/signin'); 
                 }
                 break;
             default:
@@ -90,6 +95,7 @@ class Auth extends CI_Controller{
             $this->session->set_userdata('isSigned', true);
             $this->session->set_userdata('userid', $user->getObjectId());
             $this->session->set_userdata('username', $user->getUsername());
+            $this->session->set_userdata('role', user_permissions_by_role($user->get("permission")));
             $this->session->set_userdata('permission', $user->get("permission"));
 
             if($user->get('userphoto') == null)
@@ -169,4 +175,4 @@ class Auth extends CI_Controller{
             return FALSE;
         }
     }
-} 
+}
