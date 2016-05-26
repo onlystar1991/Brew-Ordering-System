@@ -5,7 +5,7 @@
 	    <?php
 	    	$this->load->view("_partials/side_bar.php");
 	    ?>
-	    <div class="large-12 medium-8 column">
+	    <div class="large-12 column">
 	        <!-- Tabs content -->
 	        <div id="main-content" class="tabs-content">
 	            <!-- #stores -->

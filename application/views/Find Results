@@ -1,0 +1,136 @@
+Searching 26 files for "large-12 medium-8 column"
+
+C:\xampp\htdocs\NotiBrew\application\views\chat\index.php:
+    6  	    	$this->load->view("_partials/side_bar.php");
+    7  	    ?>
+    8: 	    <div class="large-12 medium-8 column">
+    9  	        <!-- Tabs content -->
+   10  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\dashboard\index.php:
+    8              $this->load->view("_partials/side_bar.php");
+    9          ?>
+   10: 	    <div class="large-12 medium-8 column">
+   11  	        <!-- Tabs content -->
+   12  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\distributor\delivery.php:
+    7  	    	$this->load->view("_partials/side_bar.php");
+    8  	    ?>
+    9: 	    <div class="large-12 medium-8 column">
+   10  	        <!-- Tabs content -->
+   11  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\distributor\index.php:
+    7  	    	$this->load->view("_partials/side_bar.php");
+    8  	    ?>
+    9: 	    <div class="large-12 medium-8 column">
+   10  	        <!-- Tabs content -->
+   11  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\distributor\view.php:
+    7              $this->load->view("_partials/side_bar.php");
+    8          ?>
+    9: 	    <div class="large-12 medium-8 column">
+   10  	        <!-- Tabs content -->
+   11  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\help\index.php:
+    6  	    	$this->load->view("_partials/side_bar.php");
+    7  	    ?>
+    8: 	    <div class="large-12 medium-8 column">
+    9  	        <!-- Tabs content -->
+   10  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\inventory\distributor.php:
+    6              $this->load->view("_partials/side_bar.php");
+    7          ?>
+    8: 	    <div class="large-12 medium-8 column">
+    9  	        <!-- Tabs content -->
+   10  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\inventory\edit.php:
+    9  	    ?>
+   10  
+   11: 	    <div class="large-12 medium-8 column">
+   12  	        <!-- Tabs content -->
+   13  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\inventory\index.php:
+    6              $this->load->view("_partials/side_bar.php");
+    7          ?>
+    8: 	    <div class="large-12 medium-8 column">
+    9  	        <!-- Tabs content -->
+   10  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\marketing\add.php:
+    7          ?>
+    8  
+    9: 	    <div class="large-12 medium-8 column">
+   10  	        <!-- Tabs content -->
+   11  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\marketing\edit.php:
+   10          ?>
+   11  
+   12: 	    <div class="large-12 medium-8 column">
+   13  	        <!-- Tabs content -->
+   14  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\marketing\index.php:
+    7              $this->load->view("_partials/side_bar.php");
+    8          ?>
+    9: 	    <div class="large-12 medium-8 column">
+   10  	        <!-- Tabs content -->
+   11  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\order\distributor_order.php:
+    7  	    	$this->load->view("_partials/side_bar.php");
+    8  	    ?>
+    9: 	    <div class="large-12 medium-8 column">
+   10  	        <!-- Tabs content -->
+   11  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\order\edit.php:
+    9  	    ?>
+   10  
+   11: 	    <div class="large-12 medium-8 column">
+   12  	        <!-- Tabs content -->
+   13  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\order\index.php:
+    9  	    	$this->load->view("_partials/side_bar.php");
+   10  	    ?>
+   11: 	    <div class="large-12 medium-8 column">
+   12  	        <!-- Tabs content -->
+   13  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\store\add.php:
+    9  	    ?>
+   10  
+   11: 	    <div class="large-12 medium-8 column">
+   12  	        <!-- Tabs content -->
+   13  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\store\detail.php:
+   10  	    ?>
+   11  
+   12: 	    <div class="large-12 medium-8 column">
+   13  	        <!-- Tabs content -->
+   14  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\store\edit.php:
+   10  	    ?>
+   11  
+   12: 	    <div class="large-12 medium-8 column">
+   13  	        <!-- Tabs content -->
+   14  	        <div id="main-content" class="tabs-content">
+
+C:\xampp\htdocs\NotiBrew\application\views\store\index.php:
+    6  	    	$this->load->view("_partials/side_bar.php");
+    7  	    ?>
+    8: 	    <div class="large-12 medium-8 column">
+    9  	        <!-- Tabs content -->
+   10  	        <div id="main-content" class="tabs-content">
+
+19 matches across 19 files
