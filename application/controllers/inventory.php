@@ -91,15 +91,18 @@ class Inventory extends CI_Controller{
 
         $result1 = $query1->find();
         $resultArray1 = array();
-
+        $userid = $this->session->userdata('userid');
         for($i = 0; $i < count($result1); $i++) {
             $object = $result1[$i];
             
-            $store = new MStore();
-            $store->store_id = $object->getObjectId();
-            $store->store_name = $object->get("storeName");
+            if ($object->get("storeOwner") == $userid || user_can(UP_ALL)) {
 
-            $resultArray1[] = $store;
+                $store = new MStore();
+                $store->store_id = $object->getObjectId();
+                $store->store_name = $object->get("storeName");
+
+                $resultArray1[] = $store;
+            }
         }
         return $resultArray1;
     }
