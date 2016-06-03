@@ -116,6 +116,26 @@
             <?php
         }
     ?>
+<?php if ($this->data['regStoreId']) {?>
+    <div id="registerStore" class="opened reveal-modal text-center" data-reveal aria-labelledby="storeTitle"
+        aria-hidden="true" role="dialog">
+        
+        <!-- Store icon: favicon.png -->
+        <img class="favicon" src="<?php echo asset_base_url();?>/images/favicon.png" alt="notibrew" title="notibrew"/> <!-- end of store icon -->
+        
+        <!-- Title message -->
+        <h5 id="storeTitle" class="title">Thank you, your <a class="link" href="<?php echo base_url().'store/detail/'.$this->data['regStoreId'];?>"><?php echo $this->data['regStoreName'];?></a> has been added in a line to be verified and added. We will contact you before we publish it to the community. Any questions please email shawn@notibrew.com</h5> <!-- end of title message -->
+        <p></p>
+                <a class="button close-reveal-modal secondary" title="OK">OK</a>
+        </ul> <!-- end of actions -->
+    </div>
+    
+<?php } ?>
 <?php
 	$this->load->view("_partials/footer.php");
 ?>
+<script>
+    $(document).ready(function(){
+    	$("#registerStore").foundation('reveal', 'open');
+    });
+    </script>

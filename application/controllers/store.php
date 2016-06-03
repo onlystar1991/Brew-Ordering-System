@@ -70,6 +70,8 @@ class Store extends CI_Controller{
 
         $this->data['stores'] = $result_array;
         $this->data['page'] = "store";
+        $this->data['regStoreId'] = $this->session->userdata('regStoreId');
+        $this->data['regStoreName'] = $this->session->userdata('regStoreName');
         $this->load->view('store/index', $data);
 
     }

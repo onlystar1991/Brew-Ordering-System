@@ -77,7 +77,8 @@ class Inventory extends CI_Controller{
         $this->data['beers'] = $this->getBeerList();
 
         $this->data['stores'] = $this->getStoreList();
-
+        $this->data['registered'] = isset($registerd)?true:false;
+        
         if ($permission == "retailer") {
             $this->load->view('inventory/index', $data);
         } else {

@@ -45,6 +45,7 @@
 				<a href="#" title="" tabindex="3" class="forgot-password">Forgot?</a>
 
 				<button type="submit" class="btn btn-primary btn-block" tabindex="4">Sign In</button>
+				<p class="to-register">New to NotiBrew?&nbsp;&nbsp;&nbsp;<a href="<?=base_url()?>auth/signup">Create an account.</a></p>
 			</fieldset>
 		</form>
 

@@ -3718,7 +3718,7 @@ ul.pagination {
   z-index: 1005;
   left: 0;
   background-color: #fff;
-  padding: 3.0625rem;
+  padding: 3.0625rem 3.0620rem 2rem;
   border: solid 1px #666666;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); }
   @media only screen and (max-width: 30.625em) {
@@ -6899,4 +6899,13 @@ ul.tsc_pagination li strong {
 
 #sidebottomnav .tab-title > a {
     border-top: 1px solid #555657;
+}
+
+#registerStore .button {
+  display:block;
+}
+
+#registerStore a.link {
+  color: #eb6101;
+  text-decoration: underline;
 }
