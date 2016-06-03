@@ -88,7 +88,7 @@
 			  	<div class="form-group row">
 			    	<label for="id_baddress" class="col-sm-4 form-control-label ">Business Address</label>
 			    	<div class="col-sm-8">
-			      		<input type="address" class="col-sm-9 input-sm" name="baddress" id="id_baddress" placeholder="600 N 5th St. Unit 623 Minneapolis, MM..." required>
+			      		<input type="text" class="col-sm-9 input-sm" name="baddress" id="id_baddress" placeholder="600 N 5th St. Unit 623 Minneapolis, MM..." required>
 			    	</div>
 			  	</div>
 
@@ -120,5 +120,18 @@
 
 	</section>
 
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUFbc1pNHLO3qrGf789-TsgMt164mpH6E&libraries=places"></script>
+	<script>
+		var defaultBounds = new google.maps.LatLngBounds(
+			new google.maps.LatLng(-33.8902, 151.1759),
+			new google.maps.LatLng(-33.8474, 151.2631)
+			);
+		var input = document.getElementById('id_baddress');
+		var options = {
+			bounds: defaultBounds,
+			types: ['establishment']
+		};
+		autocomplete = new google.maps.places.Autocomplete(input, options);
+	</script>
 </body>
 </html>
