@@ -18,7 +18,6 @@ use Parse\ParseObject;
 use Parse\ParseQuery;
 use Parse\ParseFile;
 
-
 class Marketing extends CI_Controller{
 
     private static $app_id     =   'upTrZvYWTbzoZKTI9Up9uGWYHiamL3LCWNvfiTrx';
@@ -76,6 +75,9 @@ class Marketing extends CI_Controller{
     
     private function getMarketinglist() {
         $query = new ParseQuery("Campaign");
+
+        if (!user_can(UP_ALL))
+            $query->equalTo("campaignOwner", $this->session->userdata("userid"));
         $result = $query->find();
         $resultArray = array();
 
@@ -154,6 +156,7 @@ class Marketing extends CI_Controller{
         $marketing->set("campaignDescription", $this->input->post("text"));
         $marketing->set("campaignImageUrl", $this->input->post("imageURL"));
         $marketing->set("campaignVideoUrl", $this->input->post("videoURL"));
+        $marketing->set("campaignOwner", $this->session->userdata("userid"));
         
         try {
             $marketing->save();
@@ -186,6 +189,7 @@ class Marketing extends CI_Controller{
         $marketing->set("campaignDescription", $this->input->post("text"));
         $marketing->set("campaignImageUrl", $this->input->post("imageURL"));
         $marketing->set("campaignVideoUrl", $this->input->post("videoURL"));
+        $marketing->set("campaignOwner", $this->session->userdata("userid"));
         
         try {
             $marketing->save();

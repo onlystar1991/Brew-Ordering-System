@@ -32,6 +32,11 @@
 	        <a class="tab-marketing" href="<?= base_url()?>marketing" title="Marketing">
 	            <span class="icon"></span> Marketing</a>
 	    </li>
+	    <?php } if (user_can(UP_ALL)) { ?>
+	    <li class="tab-title <?php echo ($this->data['page'] == 'users')? 'active': ''; ?>">
+	        <a class="tab-users" href="<?= base_url()?>users" title="Users">
+	            <span class="icon"></span> Users</a>
+	    </li>
 	    <?php } ?>
 	</ul>
 	<ul id="sidebottomnav" class="tabs vertical">

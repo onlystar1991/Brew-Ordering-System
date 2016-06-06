@@ -78,25 +78,24 @@ class Store extends CI_Controller{
     
     private function getStoreList() {
         $query = new ParseQuery("Stores");
+        if (!user_can(UP_ALL)) 
+            $query->equalTo("storeOwner", $this->session->userdata('userid'));
         $result = $query->find();
         $resultArray = array();
-        $userid = $this->session->userdata('userid');
         for($i = 0; $i < count($result); $i++) {
             $object = $result[$i];
-            if ($object->get("storeOwner") == $userid || user_can(UP_ALL)) {
-                $store = new MStore();
-                $store->store_id = $object->getObjectId();
-                $store->store_name = $object->get("storeName");
-                $store->store_address = $object->get("storeAddress");
-                $store->store_from_monday = $object->get("fromMonday");
-                $store->store_to_monday = $object->get("toMonday");
+            $store = new MStore();
+            $store->store_id = $object->getObjectId();
+            $store->store_name = $object->get("storeName");
+            $store->store_address = $object->get("storeAddress");
+            $store->store_from_monday = $object->get("fromMonday");
+            $store->store_to_monday = $object->get("toMonday");
 
-                if ($object->get("storeIcon")) {
-                    $store->store_logo = $object->get("storeIcon");
-                }
-                $store->store_description = $object->get("storeDescription");
-                $resultArray[] = $store;
+            if ($object->get("storeIcon")) {
+                $store->store_logo = $object->get("storeIcon");
             }
+            $store->store_description = $object->get("storeDescription");
+            $resultArray[] = $store;
         }
         return $resultArray;
     }

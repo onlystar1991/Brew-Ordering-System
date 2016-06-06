@@ -6471,6 +6471,15 @@ select {
   /*transition: background-position-x .1s ease; */
 }
 
+.tab-users:hover .icon {
+  background-position-x: -3px; }
+.tab-users .icon {
+  background-position: 30px -255px;
+  /*transition: background-position-x .1s ease; */
+}
+.dd.active .tab-users .icon, .tab-title.active .tab-users .icon {
+  background-position-x: -3px; }
+
 .tab-chat:hover .icon {
   background-position-x: -3px; }
 .tab-chat .icon {

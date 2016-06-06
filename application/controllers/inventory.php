@@ -90,20 +90,20 @@ class Inventory extends CI_Controller{
     private function getStoreList() {
         $query1 = new ParseQuery("Stores");
 
+        if (!user_can(UP_ALL))
+            $query1->equalTo("storeOwner", $this->session->userdata('userid'));
+
         $result1 = $query1->find();
         $resultArray1 = array();
-        $userid = $this->session->userdata('userid');
         for($i = 0; $i < count($result1); $i++) {
             $object = $result1[$i];
             
-            if ($object->get("storeOwner") == $userid || user_can(UP_ALL)) {
+            $store = new MStore();
+            $store->store_id = $object->getObjectId();
+            $store->store_name = $object->get("storeName");
 
-                $store = new MStore();
-                $store->store_id = $object->getObjectId();
-                $store->store_name = $object->get("storeName");
+            $resultArray1[] = $store;
 
-                $resultArray1[] = $store;
-            }
         }
         return $resultArray1;
     }
@@ -123,7 +123,10 @@ class Inventory extends CI_Controller{
     private function getInventorylist() {
        
         $query = new ParseQuery("Inventory");
-        $query->equalTo("createdBy", $this->session->userdata['permission']);
+
+        if (!user_can(UP_ALL))
+            $query->equalTo("inventoryOwner", $this->session->userdata['userid']);
+        
         $result = $query->find();
         $resultArray = array();
         for($i = 0; $i < count($result); $i++) {
@@ -200,6 +203,7 @@ class Inventory extends CI_Controller{
         $query = new ParseQuery("Inventory");
         $inventory = $query->get($this->input->post("inventory_id1"));
 
+        $inventory->set("inventoryOwner", $this->session->userdata['userid']);
         $inventory->set("inventoryName", $this->input->post("name1"));
         $inventory->set("inventorySku", $this->input->post("sku1"));
         $inventory->set("inventoryDistributor", $this->input->post("distributor1"));

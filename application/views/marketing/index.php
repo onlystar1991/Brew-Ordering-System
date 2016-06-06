@@ -78,6 +78,11 @@
                                             		</tr>
                                             		<?php
                                             	}
+                                                if (count($marketings) == 0) {?>
+                                                    <tr>
+                                                        <td colspan="10">Sorry, There is no data to show.</td>
+                                                    </tr>
+                                                <?php }
                                             	?>
                                                
                                             </tbody>
