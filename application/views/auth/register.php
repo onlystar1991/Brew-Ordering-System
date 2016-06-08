@@ -88,7 +88,7 @@
 			  	<div class="form-group row">
 			    	<label for="id_baddress" class="col-sm-4 form-control-label ">Business Address</label>
 			    	<div class="col-sm-8">
-			      		<input type="text" class="col-sm-9 input-sm" name="baddress" id="id_baddress" placeholder="Address ex: 1234 North Main st. Minnesota,MN 55401" required>
+			      		<input type="text" class="col-sm-9 input-sm" name="baddress" id="id_baddress" placeholder="Address ex: 1234 North Main st. Minnesota, MN 55401" required>
 			    	</div>
 			  	</div>
 
