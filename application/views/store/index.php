@@ -54,7 +54,7 @@
 		                        <td class="store__logo">
 		                            <img src="<?php echo $store->store_logo; ?>" style="width: 50px; height: 50px;" title="Store Icon"/>
 		                        </td>
-		                        <td class="store__description">Top Hops is Ted Kenny's dream com true...</td>
+		                        <td class="store__description"><?php echo $store->store_description;?></td>
 		                        <!-- Action -->
 		                        <td class="table--dsh__action-stores">
 		                            <!-- Edit -->
