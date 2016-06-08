@@ -27,6 +27,7 @@ class Store extends CI_Controller{
     public function __construct() {
 
         parent::__construct();
+        session_start();
         ParseClient::initialize(self::$app_id, self::$rest_key, self::$master_key);
         $this->load->model('mstore');
         $this->load->helper('url');
@@ -70,10 +71,24 @@ class Store extends CI_Controller{
 
         $this->data['stores'] = $result_array;
         $this->data['page'] = "store";
-        $this->data['regStoreId'] = $this->session->userdata('regStoreId');
-        $this->data['regStoreName'] = $this->session->userdata('regStoreName');
-        $this->load->view('store/index', $data);
 
+        if ($this->session->userdata('waiting')) {
+            $query = new ParseQuery("Approve");
+        
+            $query->equalTo("user", ParseUser::getCurrentUser());
+            $query->includeKey("store");
+
+            $result = $query->first();
+
+            // print_r($result);exit;
+            if ($result) {
+                $this->data['regStoreId'] = $result->get('store')->getObjectId();
+                $this->data['regStoreName'] = $result->get('store')->get('storeName');
+                // print_r($this->data);exit;
+            }
+        }
+
+        $this->load->view('store/index', $data);
     }
     
     private function getStoreList() {

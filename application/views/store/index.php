@@ -37,7 +37,11 @@
                     	<?php
                     		foreach ($this->data['stores'] as $store) {
                 			?>
+                			<?php if ($this->data['regStoreId'] && $this->data['regStoreId'] == $store->store_id) {?>
+                			<tr class="store disable">
+                			<?php } else {?>
                 			<tr class="store">
+                			<?php } ?>
                 				<td class="store__name">
                 					<a href="<?php echo base_url().'store/detail/'.$store->store_id; ?>" title="Top Hops Beer Shop">
                 						<?php echo $store->store_name; ?>

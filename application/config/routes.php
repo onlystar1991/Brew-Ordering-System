@@ -46,6 +46,9 @@ $route['store/(:num)'] = "store/index/(:num)";
 $route['store/edit/(:val)'] = "store/edit/(:val)";
 $route['store/delete/(:val)'] = "store/delete/(:val)";
 
+$route['users/index'] = "users/index";
+$route['users/(:num)'] = "users/index/(:num)";
+
 $routes['auth/'] = 'auth/index';
 $routes['auth/index'] = 'auth/index';
 

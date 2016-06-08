@@ -15,12 +15,17 @@ define('SIGNUP_WITH_PARAMS',    '1');
 define('REGISTER_WITHOUT_PARAMS', '');
 define('REGISTER_WITH_PARAMS',    '2');
 
+define('USER_STATUS_REGISTER', 0);
+define('USER_STATUS_APPROVE',  1);
+define('USER_STATUS_DENY',     2);
+
 use Parse\ParseClient;
 use Parse\ParseUser;
 use Parse\ParseObject;
 use Parse\ParseSessionStorage;
 use Parse\ParseException;
 use Parse\ParseFile;
+use Parse\ParseQuery;
 
 class Auth extends CI_Controller {
 
@@ -63,6 +68,13 @@ class Auth extends CI_Controller {
                     $user = ParseUser::getCurrentUser();
                     $permission = $user->get("permission");
                     $username = $user->get("username");
+
+                    $query = new ParseQuery("Approve");
+                    $query->equalTo("user", $user);
+                    $result = $query->first();
+
+                    if ($result && $result->get("status") == USER_STATUS_REGISTER)
+                        $this->session->set_userdata('waiting', true);
                     
                     if (user_can(UP_STORE_ALL) || user_can(UP_STORE_VIEW))
                         redirect('/store', 'get');
@@ -159,6 +171,7 @@ class Auth extends CI_Controller {
             $user = new ParseUser();
             $user->set("username", $username);
             $user->set("password", $password);
+
             $user->signUp();
             return TRUE;
 
@@ -260,8 +273,14 @@ class Auth extends CI_Controller {
             }
 
             $store->save();
-            $this->session->set_userdata('regStoreId', $store->getObjectId());
-            $this->session->set_userdata('regStoreName', $bname);
+
+            $approve = new ParseObject("Approve");
+            $approve->set("user", $user);
+            $approve->set("store", $store);
+            $approve->set("status", USER_STATUS_REGISTER);
+            $approve->save();
+
+            $this->session->set_userdata('waiting', true);
 
             return TRUE;
 

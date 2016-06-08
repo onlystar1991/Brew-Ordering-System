@@ -33,7 +33,9 @@ class Users extends CI_Controller{
         //TODO:  Add extra constructor Code
         ParseClient::initialize(self::$app_id, self::$rest_key, self::$master_key);
         $this->load->library("session");
+        $this->load->library("pagination");
         $this->load->helper('url');
+        $this->load->model('muser');
 
     }
 
@@ -63,10 +65,13 @@ class Users extends CI_Controller{
                     $cUser = $all_users[$i];
 
                     $query = new ParseQuery("Stores");
-                    $query->notEqualTo("objectId", $this->session->userdata('userid'));
+                    $query->equalTo("storeOwner", $cUser->user_id);
                     
-                    $result = $query->find();
-                    $cUser->business_name = 
+                    $result = $query->first();
+                    //print_r($result);exit;
+                    if (!$result) continue;
+                    
+                    $cUser->business_name = $result->get("storeName");
                     $result_array[] = $all_users[$i];
                 } else {
                     break;
@@ -76,19 +81,27 @@ class Users extends CI_Controller{
             }
         }
 
+        //print_r($result_array);exit;
         $this->data['users'] = $result_array;
         $this->data['page'] = "users";
         $this->load->view('users/index', $data);
     }
 
     private function getUserList() {
-        $query = new ParseQuery("_Users");
-        if (!user_can(UP_ALL)) 
-            $query->notEqualTo("objectId", $this->session->userdata('userid'));
+        $query = new ParseQuery("Approve");
+        //if (!user_can(UP_ALL)) 
+        // $query->notEqualTo("user", $this->session->userdata('userid'));
+        $query->equalTo("status", USER_STATUS_REGISTER);
+        $query->includeKey("user");
         $result = $query->find();
+
+        // print_r($result);exit;
         $resultArray = array();
         for($i = 0; $i < count($result); $i++) {
-            $object = $result[$i];
+            $userPointer = $result[$i];
+            // print_r($userPointer->get("user"));exit;
+            $object = $userPointer->get("user");
+
             $store = new MUser();
             $store->user_id = $object->getObjectId();
             $store->user_name = $object->get("fullname");
@@ -100,5 +113,38 @@ class Users extends CI_Controller{
             $resultArray[] = $store;
         }
         return $resultArray;
+    }
+
+    public function approve($user_id) {
+        $query = new ParseQuery("Approve");
+        //if (!user_can(UP_ALL)) 
+        // $query->equalTo("objectId", $user_id);
+        $query->equalTo("user", ['__type' => "Pointer", 'className'=> "_User", 'objectId' => $user_id]);
+        $query->includeKey("user");
+        $user = $query->first();
+        // print_r($user);exit;
+        $user->set("status", USER_STATUS_APPROVE);
+        try {
+            $user->save(true);
+            redirect("users/");
+        } catch (ParseException $ex) {
+            die("Exception Occured :".$ex->getMessage());
+        }
+    }
+
+    public function deny($user_id) {
+        $query = new ParseQuery("_User");
+        //if (!user_can(UP_ALL)) 
+        // $query->equalTo("objectId", $user_id);
+        $query->equalTo("user", ['__type' => "Pointer", 'className'=> "_User", 'objectId' => $user_id]);
+        $query->includeKey("user");
+        $user = $query->first();
+        $user->set("status", USER_STATUS_DENY);
+        try {
+            $user->save(true);
+            redirect("users/");
+        } catch (ParseException $ex) {
+            die("Exception Occured :".$ex->getMessage());
+        }
     }
 }

@@ -6918,3 +6918,16 @@ ul.tsc_pagination li strong {
   color: #eb6101;
   text-decoration: underline;
 }
+
+.table--dsh__action-users {
+  text-align:center;
+}
+
+.table--dsh__action-users .button {
+  margin-bottom:0;
+}
+
+.table tr.disable {
+  opacity:0.7;
+  background: #ffe;
+}
