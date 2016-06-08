@@ -37,35 +37,35 @@
 				<div class="form-group row">
 			    	<label for="id_contactname" class="col-sm-4 form-control-label">Contact Name</label>
 			    	<div class="col-sm-8">
-			      		<input type="text" class="col-sm-3 input-sm" name="contactname" id="id_contactname" placeholder="John Doe" required>
+			      		<input type="text" class="col-sm-3 input-sm" name="contactname" id="id_contactname" placeholder="Full name" required>
 			    	</div>
 			  	</div>
 
 			  	<div class="form-group row">
 			    	<label for="id_fbpage" class="col-sm-4 form-control-label">Facebook Page</label>
 			    	<div class="col-sm-8">
-			      		<input type="url" class="col-sm-12 input-sm" name="fbpage" id="id_fbpage" placeholder="https://www.facebook.com/notibrew">
+			      		<input type="url" class="col-sm-12 input-sm" name="fbpage" id="id_fbpage" placeholder="https://www.facebook.com/your_business">
 			    	</div>
 			  	</div>
 
 			  	<div class="form-group row">
 			    	<label for="id_phone" class="col-sm-4 form-control-label">Telephone</label>
 			    	<div class="col-sm-8">
-			      		<input type="phone" class="col-sm-6 input-sm" name="phone" id="id_phone" placeholder="000 - 000 - 0000" required>
+			      		<input type="phone" class="col-sm-6 input-sm" name="phone" id="id_phone" placeholder="(000)-000-0000" required>
 			    	</div>
 			  	</div>
 
 			  	<div class="form-group row">
 			    	<label for="id_email" class="col-sm-4 form-control-label">Email</label>
 			    	<div class="col-sm-8">
-			      		<input type="email" class="col-sm-6 input-sm" name="email" id="id_email" placeholder="john.doe@notibrew.com" required>
+			      		<input type="email" class="col-sm-6 input-sm" name="email" id="id_email" placeholder="Email address" required>
 			    	</div>
 			  	</div>
 
 			  	<div class="form-group row">
 			    	<label for="id_bname" class="col-sm-4 form-control-label">Business Name</label>
 			    	<div class="col-sm-8">
-			      		<input type="text" class="col-sm-12 input-sm" name="bname" id="id_bname" placeholder="NotiBrew Liquors LLC" required>
+			      		<input type="text" class="col-sm-12 input-sm" name="bname" id="id_bname" placeholder="" required>
 			    	</div>
 			  	</div>
 
@@ -88,14 +88,14 @@
 			  	<div class="form-group row">
 			    	<label for="id_baddress" class="col-sm-4 form-control-label ">Business Address</label>
 			    	<div class="col-sm-8">
-			      		<input type="text" class="col-sm-9 input-sm" name="baddress" id="id_baddress" placeholder="600 N 5th St. Unit 623 Minneapolis, MM..." required>
+			      		<input type="text" class="col-sm-9 input-sm" name="baddress" id="id_baddress" placeholder="Address ex: 1234 North Main st. Minnesota,MN 55401" required>
 			    	</div>
 			  	</div>
 
 			  	<div class="form-group row">
 			    	<label for="id_bdescription" class="col-sm-4 form-control-label ">Description of Business</label>
 			    	<div class="col-sm-8">
-			      		<textarea class="col-sm-12 input-sm" id="id_bdescription" name="bdescription" placeholder="Built for consumers 21+, NotiBrew is...."></textarea>
+			      		<textarea class="col-sm-12 input-sm" id="id_bdescription" name="bdescription" placeholder=""></textarea>
 			    	</div>
 			  	</div>
 
