@@ -1,6 +1,13 @@
 <?php
 	$this->load->view("_partials/header.php");
 ?>
+<style>
+.store__description {
+		overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+</style>
 	<main id="main" class="row">
 	    <?php
 	    	$this->load->view("_partials/side_bar.php");
@@ -13,7 +20,7 @@
 
 	            	<header class="store-action">
                         <span class="h4">&nbsp;</span>
-                        
+
                         <!-- Actions -->
                         <ul class="no-bullet inline-list right">
                             <li><a class="button secondary" id="addStoreButton" href="<?php echo base_url().'store/add/'; ?>" title="Add Store"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Store</a></li>
@@ -86,7 +93,7 @@
 	                <!-- Stores pagination -->
 	                <div id="pagination" class="pagination-centered" style="width: auto; height: auto;">
 	                    <ul class="tsc_pagination" style="height: auto; width: 50%; margin: auto;">
-	                        <?php 
+	                        <?php
 		                        foreach ($this->data['links'] as $link) {
 		                            echo "<li>". $link."</li>";
 		                        }
@@ -104,10 +111,10 @@
             ?>
 	<div id="deleteStore<?php echo $store->store_id;?>" class="reveal-modal text-center" data-reveal aria-labelledby="storeTitle"
         aria-hidden="true" role="dialog">
-        
+
         <!-- Store icon: favicon.png -->
         <img class="favicon" src="<?php echo asset_base_url();?>/images/favicon.png" alt="notibrew" title="notibrew"/> <!-- end of store icon -->
-        
+
         <!-- Title message -->
         <h4 id="storeTitle" class="title">Are you sure you want to delete this store?</h4> <!-- end of title message -->
         <p></p>
@@ -129,17 +136,17 @@
 <?php if ($this->data['regStoreId']) {?>
     <div id="registerStore" class="opened reveal-modal text-center" data-reveal aria-labelledby="storeTitle"
         aria-hidden="true" role="dialog">
-        
+
         <!-- Store icon: favicon.png -->
         <img class="favicon" src="<?php echo asset_base_url();?>/images/favicon.png" alt="notibrew" title="notibrew"/> <!-- end of store icon -->
-        
+
         <!-- Title message -->
         <h5 id="storeTitle" class="title">Thank you, your <a class="link" href="<?php echo base_url().'store/detail/'.$this->data['regStoreId'];?>"><?php echo $this->data['regStoreName'];?></a> has been added in a line to be verified and added. We will contact you before we publish it to the community. Any questions please email shawn@notibrew.com</h5> <!-- end of title message -->
         <p></p>
                 <a class="button close-reveal-modal secondary" title="OK">OK</a>
         </ul> <!-- end of actions -->
     </div>
-    
+
 <?php } ?>
 <?php
 	$this->load->view("_partials/footer.php");

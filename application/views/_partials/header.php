@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="<?= asset_base_url()?>/css/app.css" media="screen"/>
     <link rel="stylesheet" type="text/css" href="<?= asset_base_url()?>/css/jquery-ui.css" media="screen"/>
     <link media="screen" href="<?= asset_base_url()?>/css/chosen.min.css" type="text/css" rel="stylesheet">
+    
 
     <!-- end of stylesheets -->
 
