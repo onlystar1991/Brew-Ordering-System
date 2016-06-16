@@ -224,12 +224,11 @@ class Auth extends CI_Controller {
         $fbpage = $this->input->post('fbpage');
         $phone = $this->input->post('phone');
         $bname = $this->input->post('bname');
-        $btype = $this->input->post('btype');
+        $btype = ucfirst($this->input->post('btype'));
         $badd = $this->input->post('baddress');
         $bdesc = $this->input->post('bdescription');
 
         try{
-
             // print_r($_FILES);exit;
             ParseClient::setStorage( new ParseSessionStorage() );
 

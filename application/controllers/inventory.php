@@ -115,7 +115,7 @@ class Inventory extends CI_Controller{
         for($i = 0; $i < count($result); $i++) {
             $object = $result[$i];
 
-            $resultArray[] = $object->get("beerTitle");
+            $resultArray[] = $object->get("name");
         }
         return $resultArray;
     }
