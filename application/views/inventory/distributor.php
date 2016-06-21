@@ -1,6 +1,14 @@
 <?php
 	$this->load->view("_partials/header.php");
 ?>
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
+<style type="text/css">
+#ui-id-1 {
+    max-height: 200px;
+    overflow-y: auto;    
+    overflow-x: hidden;
+}
+</style>
 	<main id="main" class="row">
 	    <?php
             $this->load->view("_partials/side_bar.php");
@@ -120,8 +128,6 @@
                 select_tag +=  "<option value='" + beers[beer].store_id + "'>" + beers[beer].store_name + "</option>";
             }
             select_tag += "</select>";
-            console.log(select_tag);
-
             var html =  "<tr>" + 
                             "<td>" +
                                 "<input type='text' id='td-sku' value='' name='sku' />" + 
@@ -158,10 +164,9 @@
 
             $("#inventory tbody").append(html);
 
-            var beers = <?php echo json_encode($this->data['beers']);?>;
-
-            $("#td-name").autocomplete({
-                source: beers
+            $("#td-name").swiftype({
+                fetchFields: {'books': ['name']},
+                engineKey: 'aaGGbtZP6z_8sA5DJYbM',
             })
             $("#saveBeer").click(function(e) {
                 var isValid = true;

@@ -74,7 +74,7 @@ class Inventory extends CI_Controller{
         $this->data['inventories'] = $result_array;
         $this->data['page'] = "inventory";
 
-        $this->data['beers'] = $this->getBeerList();
+        // $this->data['beers'] = $this->getBeerList();
 
         $this->data['stores'] = $this->getStoreList();
         $this->data['registered'] = isset($registerd)?true:false;
@@ -108,16 +108,18 @@ class Inventory extends CI_Controller{
         return $resultArray1;
     }
     
-    private function getBeerList() {
-        $query = new ParseQuery("Beer");
+    public function getBeers() {
+        
+        $query = new ParseQuery("BreweryBeers");
+        $query->limit(1000);
         $result = $query->find();
-        $resultArray = array();
+        $resultArray2 = array();
         for($i = 0; $i < count($result); $i++) {
             $object = $result[$i];
 
-            $resultArray[] = $object->get("name");
+            $resultArray2[] = $object->get("name");
         }
-        return $resultArray;
+        echo json_encode($resultArray2);
     }
 
     private function getInventorylist() {

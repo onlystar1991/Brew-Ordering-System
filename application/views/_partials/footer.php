@@ -80,5 +80,6 @@
 ?>
 
 <script type="text/javascript" src="<?= asset_base_url()?>/js/jquery-ui.js"></script>
+<script type="text/javascript" src="<?= asset_base_url()?>/js/jquery.swiftype.autocomplete.js"></script>
 </body>
 </html>
