@@ -8,7 +8,7 @@
 	    <?php
 	    	$this->load->view("_partials/side_bar.php");
 	    ?>
-	    <div class="large-9 medium-8 column">
+	    <div class="large-12 column">
 	        <!-- Tabs content -->
 	        <div id="main-content" class="tabs-content">
 	            
@@ -58,6 +58,11 @@
                         	</tr>
                         		<?php
                         	}
+                            if (count($orders) == 0) {?>
+                                <tr>
+                                    <td colspan="10">Sorry, There is no data to show.</td>
+                                </tr>
+                            <?php }
                         	?>
                         </tbody>
                     </table>                    

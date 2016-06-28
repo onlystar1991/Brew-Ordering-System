@@ -18,7 +18,6 @@ use Parse\ParseObject;
 use Parse\ParseQuery;
 use Parse\ParseFile;
 
-
 class Order extends CI_Controller {
 
     private static $app_id     =   'upTrZvYWTbzoZKTI9Up9uGWYHiamL3LCWNvfiTrx';
@@ -28,6 +27,7 @@ class Order extends CI_Controller {
     public function __construct() {
 
         parent::__construct();
+        session_start();
         ParseClient::initialize(self::$app_id, self::$rest_key, self::$master_key);
         $this->load->model('morder');
         $this->load->model('minventory');
@@ -84,7 +84,8 @@ class Order extends CI_Controller {
         } else if ($permission == "distributor") {
             $this->load->view('order/distributor_order', $data);
         } else {
-            die("invalid permission");
+            // die("invalid permission");
+            $this->load->view('order/index', $data);
         }
     }
 
@@ -135,9 +136,16 @@ class Order extends CI_Controller {
        
         $query = new ParseQuery("MyOrders");
 
+        $currentUser = ParseUser::getCurrentUser();
+
+        if (!user_can(UP_ALL))
+            $query->equalTo("ownerId", $currentUser);
+        
         $query->notEqualTo("inStock", NULL);
 
         $result = $query->find();
+
+        // print_r($currentUser);exit;
 
         $resultArray = array();
         for($i = 0; $i < count($result); $i++) {

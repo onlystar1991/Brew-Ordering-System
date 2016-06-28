@@ -1,11 +1,19 @@
 <?php
 	$this->load->view("_partials/header.php");
 ?>
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
+<style type="text/css">
+#ui-id-1 {
+    max-height: 200px;
+    overflow-y: auto;    
+    overflow-x: hidden;
+}
+</style>
 	<main id="main" class="row">
 	    <?php
             $this->load->view("_partials/side_bar.php");
         ?>
-	    <div class="large-9 medium-8 column">
+	    <div class="large-12 column">
 	        <!-- Tabs content -->
 	        <div id="main-content" class="tabs-content">
 	            
@@ -23,16 +31,19 @@
                     </article>
                     <form id="addBeerFrom" action="<?php echo base_url();?>inventory/saveBeer" method="post" >
                         <table class="table table--dsh" id="inventory">
-                            <tr>
-                                <th class="table--dsh__header">SKU</th>
-                                <th class="table--dsh__header">Price</th>
-                                <th class="table--dsh__header">Name</th>
-                                <th class="table--dsh__header">Distributor</th>
-                                <th class="table--dsh__header">Quantity</th>
-                                <th class="table--dsh__header">Demand</th>
-                                <th class="table--dsh__header">Status</th>
-                                <th class="table--dsh__header"></th>
-                            </tr>
+                            <thead>
+                                <tr>
+                                    <th class="table--dsh__header">SKU</th>
+                                    <th class="table--dsh__header">Price</th>
+                                    <th class="table--dsh__header">Name</th>
+                                    <th class="table--dsh__header">Distributor</th>
+                                    <th class="table--dsh__header">Quantity</th>
+                                    <th class="table--dsh__header">Demand</th>
+                                    <th class="table--dsh__header">Status</th>
+                                    <th class="table--dsh__header"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
                             <?php
                             $str = "";
                         	foreach($this->data['inventories'] as $inventory) {
@@ -76,12 +87,18 @@
                         		</tr>
                         		<?php
                         	}
+
+                            if (count($this->data['inventories']) == 0) {?>
+                                <tr>
+                                    <td colspan="10">Sorry, There is no data to show.</td>
+                                </tr>
+                            <?php }
                             ?>
-                            
+                            </tbody>
                         </table>
                     </form>
                     <!-- Stores pagination -->
-                        <a class="button alert" href="<?php echo base_url();?>inventory/edit/<?php echo $str;?>" title="Edit" style="margin-left: 76%;position: absolute;"><i class="fa fa-pencil"></i> Edit</a>
+                        <a class="button alert" href="<?php echo base_url();?>inventory/edit/<?php echo $str;?>" title="Edit" style="right:2.125rem;position: absolute;"><i class="fa fa-pencil"></i> Edit</a>
                         
                         <div id="pagination" class="pagination-centered" style="width: auto; height: auto;">
                             <ul class="tsc_pagination" style="height: auto; width: 50%; margin: auto;">
@@ -111,8 +128,6 @@
                 select_tag +=  "<option value='" + beers[beer].store_id + "'>" + beers[beer].store_name + "</option>";
             }
             select_tag += "</select>";
-            console.log(select_tag);
-
             var html =  "<tr>" + 
                             "<td>" +
                                 "<input type='text' id='td-sku' value='' name='sku' />" + 
@@ -149,10 +164,9 @@
 
             $("#inventory tbody").append(html);
 
-            var beers = <?php echo json_encode($this->data['beers']);?>;
-
-            $("#td-name").autocomplete({
-                source: beers
+            $("#td-name").swiftype({
+                fetchFields: {'books': ['name']},
+                engineKey: 'aaGGbtZP6z_8sA5DJYbM',
             })
             $("#saveBeer").click(function(e) {
                 var isValid = true;

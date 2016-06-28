@@ -12,14 +12,22 @@ define('SIGNIN_WITHOUT_PARAMS', '');
 define('SIGNIN_WITH_PARAMS',    '0');
 define('SIGNUP_WITHOUT_PARAMS', '');
 define('SIGNUP_WITH_PARAMS',    '1');
+define('REGISTER_WITHOUT_PARAMS', '');
+define('REGISTER_WITH_PARAMS',    '2');
+
+define('USER_STATUS_REGISTER', 0);
+define('USER_STATUS_APPROVE',  1);
+define('USER_STATUS_DENY',     2);
 
 use Parse\ParseClient;
 use Parse\ParseUser;
+use Parse\ParseObject;
 use Parse\ParseSessionStorage;
 use Parse\ParseException;
 use Parse\ParseFile;
+use Parse\ParseQuery;
 
-class Auth extends CI_Controller{
+class Auth extends CI_Controller {
 
     private static $app_id     =   'upTrZvYWTbzoZKTI9Up9uGWYHiamL3LCWNvfiTrx';
     private static $rest_key   =   'NUyL27OK8vIdZGtiqwskfVyPAiCT0Z6zCm7d3NXG';
@@ -39,7 +47,7 @@ class Auth extends CI_Controller{
 
     }
 
-    public function index(){
+    public function index() {
         //TODO:  called when
         $type = $this->input->post('type');
        
@@ -60,8 +68,20 @@ class Auth extends CI_Controller{
                     $user = ParseUser::getCurrentUser();
                     $permission = $user->get("permission");
                     $username = $user->get("username");
+
+                    $query = new ParseQuery("Approve");
+                    $query->equalTo("user", $user);
+                    $result = $query->first();
+
+                    if ($result && $result->get("status") == USER_STATUS_REGISTER)
+                        $this->session->set_userdata('waiting', true);
                     
-                    redirect('/store', 'get');
+                    if (user_can(UP_STORE_ALL) || user_can(UP_STORE_VIEW))
+                        redirect('/store', 'get');
+                    else if (user_can(UP_INVENTORY_ALL) || user_can(UP_INVENTORY_VIEW))
+                        redirect('/inventory', 'get');
+                    else
+                        $this->load->view('auth/signin'); 
                 }
                 break;
             default:
@@ -74,7 +94,7 @@ class Auth extends CI_Controller{
         
     }
 
-    public function  logout(){
+    public function  logout() {
         //TODO:  called when
         $this->session->sess_destroy();
         $this->load->view('auth/signin');
@@ -90,6 +110,7 @@ class Auth extends CI_Controller{
             $this->session->set_userdata('isSigned', true);
             $this->session->set_userdata('userid', $user->getObjectId());
             $this->session->set_userdata('username', $user->getUsername());
+            $this->session->set_userdata('role', user_permissions_by_role($user->get("permission")));
             $this->session->set_userdata('permission', $user->get("permission"));
 
             if($user->get('userphoto') == null)
@@ -107,7 +128,7 @@ class Auth extends CI_Controller{
         }
     }
 
-    public function signup(){
+    public function signup() {
         //TODO:  called when
         $type = $this->input->post('type');
         if(ParseUser::getCurrentUser() != NULL)
@@ -120,10 +141,6 @@ class Auth extends CI_Controller{
                 break;
             case SIGNUP_WITH_PARAMS:
                 $this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[5]|max_length[12]');
-                $this->form_validation->set_rules('firstName', 'Firstname', 'trim|required|max_length[12]');
-                $this->form_validation->set_rules('lastName', 'Lastname', 'trim|required|max_length[12]');
-                $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
-                $this->form_validation->set_rules('usergroup', 'UserGroup', 'trim|required|valid_text');
                 $this->form_validation->set_rules('password', 'Password', 'trim|required|matches[passconf]|callback__save_parse');
                 $this->form_validation->set_rules('passconf', 'Password Confirmation', 'required');
 
@@ -135,7 +152,7 @@ class Auth extends CI_Controller{
                     $this->session->set_userdata('isSigned', true);
                     $this->session->set_userdata('userid',  ParseUser::getCurrentUser()->getObjectId());
                     $this->session->set_userdata('username', ParseUser::getCurrentUser()->getUsername());
-                    redirect('/main/profile/'.ParseUser::getCurrentUser()->get('username'));                    
+                    redirect('/auth/register/', 'get');                    
                 }
                 break;
             default:
@@ -146,9 +163,6 @@ class Auth extends CI_Controller{
         //TODO:  callback function when validate the form
 
         $username = $this->input->post('username');
-        $firstName = $this->input->post('firstName');
-        $lastName = $this->input->post('lastName');
-        $email = $this->input->post('email');
 
         try{
 
@@ -156,10 +170,8 @@ class Auth extends CI_Controller{
 
             $user = new ParseUser();
             $user->set("username", $username);
-            $user->set("firstName", $firstName);
-            $user->set("lastName", $lastName);
             $user->set("password", $password);
-            $user->set("email", $email);
+
             $user->signUp();
             return TRUE;
 
@@ -169,4 +181,113 @@ class Auth extends CI_Controller{
             return FALSE;
         }
     }
-} 
+
+    public function register() {
+        if(ParseUser::getCurrentUser() == NULL) {
+            $this->load->view('auth/signin');
+            return;
+        }
+            
+        $type = $this->input->post('type');
+
+        switch($type){
+            case REGISTER_WITHOUT_PARAMS:
+                $this->load->view('auth/register');
+                break;
+            case REGISTER_WITH_PARAMS:
+                $this->form_validation->set_rules('contactname', 'Contact Name', 'trim|required');
+                $this->form_validation->set_rules('fbpage', 'Facebook Page', 'trim');
+                $this->form_validation->set_rules('phone', 'Phone', 'trim|required');
+                $this->form_validation->set_rules('email', 'Email', 'trim|required|callback__edit_parse');
+                $this->form_validation->set_rules('bname', 'Business Name', 'trim|required');
+                $this->form_validation->set_rules('btype', 'Business Type', 'trim|required');
+                $this->form_validation->set_rules('baddress', 'Business Address', 'required');
+                $this->form_validation->set_rules('bdescription', 'Business Description', 'required');
+                // $this->form_validation->set_rules('blogo', 'Business Logo', '');
+
+                if($this->form_validation->run() == FALSE){
+                    //Field validation failed.  User redirected to login page
+                    $this->load->view('auth/register');
+                } else {
+                    //Go to private area
+                    redirect('/store', 'get');
+                }
+                break;
+            default:
+        }    
+    }
+
+    public function _edit_parse($email) {
+        //TODO:  callback function when validate the form
+
+        $contactname = $this->input->post('contactname');
+        $fbpage = $this->input->post('fbpage');
+        $phone = $this->input->post('phone');
+        $bname = $this->input->post('bname');
+        $btype = ucfirst($this->input->post('btype'));
+        $badd = $this->input->post('baddress');
+        $bdesc = $this->input->post('bdescription');
+
+        try{
+            // print_r($_FILES);exit;
+            ParseClient::setStorage( new ParseSessionStorage() );
+
+            $user = ParseUser::getCurrentUser();
+            $user->set("fullname", $contactname);
+            $user->set("email", $email);
+            $user->set("fbpage", $fbpage);
+            $user->set("phone", $phone);
+            $user->set("permission", $btype);
+            $user->save();
+
+            $this->session->set_userdata('role', user_permissions_by_role($btype));
+            $this->session->set_userdata('permission', $btype);
+            
+            $store = new ParseObject("Stores");
+            
+            $store->set("storeName", $bname);
+            $store->set("storeAddress", $badd);
+            $store->set("storeDescription", $bdesc);
+            $store->set("fromMonday", "9am");
+            $store->set("toMonday", "11pm");
+            $store->set("fromTuesday", "9am");
+            $store->set("toTuesday", "11pm");
+            $store->set("fromWednesday", "9am");
+            $store->set("toWednesday", "11pm");
+            $store->set("fromThursday", "9am");
+            $store->set("toThursday", "11pm");
+            $store->set("fromFriday", "9am");
+            $store->set("toFriday", "11pm");
+            $store->set("fromSaturday", "9am");
+            $store->set("toSaturday", "11pm");
+            $store->set("fromSunday", "9am");
+            $store->set("toSunday", "11pm");
+            $store->set("storeOwner", ParseUser::getCurrentUser()->getObjectId());
+            $store->set("storeType", $btype);
+
+            if ($_FILES['blogo']['name']) {
+                $store_icon = ParseFile::createFromData(file_get_contents($_FILES['blogo']['tmp_name']), $_FILES['blogo']['name']);
+                $store_icon->save();
+                $store->set("storeIcon", $store_icon->getURL());
+            }
+
+            $store->save();
+
+            $approve = new ParseObject("Approve");
+            $approve->set("user", $user);
+            $approve->set("store", $store);
+            $approve->set("status", USER_STATUS_REGISTER);
+            $approve->save();
+
+            $this->session->set_userdata('waiting', true);
+
+            return TRUE;
+
+        } catch(ParseException $ex) {
+            // print_r($ex);exit;
+            $this->form_validation->set_message('edit_parse', $ex->getMessage());
+            echo($ex->getMessage());
+            return FALSE;
+        }
+    }
+}

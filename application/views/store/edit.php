@@ -9,7 +9,7 @@
 	    	$this->load->view("_partials/side_bar.php");
 	    ?>
 
-	    <div class="large-9 medium-8 column">
+	    <div class="large-12 column">
 	        <!-- Tabs content -->
 	        <div id="main-content" class="tabs-content">
 	            <!-- #stores -->
@@ -317,64 +317,41 @@
                                 <!-- Clearfix -->
                                 <div class="clearfix"></div> <!-- end of clearfix -->
 
-                                <!-- Store logo -->
-                                <div class="photo-wrapper" style="width: 100px; height: 80px;">
-                                    
-                                    <img class="th photo" id="img_store_logo" src="<?php echo $store->store_logo; ?>" style="max-width: 70px !important; max-height: 70px !important;" alt="" title="Top Hops Beer Shop"/>
-                                    <br/>
-                                    <!-- Filename -->
-                                     <span class="photo-label" id="logo_title"><?php $res = explode("-", $store->store_logo); echo $res[count($res)-1]; ?></span> <!-- end of filename -->
 
-                                     <!-- Delete action -->
-                                     <a href="#" id="delete_store_logo" class="deleteImage" title="Delete (filename goes here)"><i class="fa fa-times"></i></a>
+
+                                <div class="photo-wrapper">
+                                	<img class="th photo" id="img_store_logo" src="<?php echo $store->store_logo; ?>" style="max-width: 70px !important; max-height: 70px !important;" alt="" title="Top Hops Beer Shop"/>
+                                	<br>
+                                    <input type="file" name="store_icon" id="file_store_icon" style="display: none;">
+                                    Logo: &nbsp;&nbsp;&nbsp;&nbsp;<a id="store_logo" class="button" href="#" value="Select Logo"> Select Logo</a>
+                                    <a href="#" id="delete_store_image2" class="deleteImage" title="Delete (filename goes here)"><i class="fa fa-times"></i></a>
+                                    <span id="logo_title"><?php $res = explode("-", $store->store_logo); echo $res[count($res)-1]; ?></span>
                                 </div> <!-- end of store logo -->
 
                                 <!-- Clearfix -->
                                 <p class="clearfix"></p> <!-- end of clearfix -->
 
-                                <!-- Store photos -->
-                                <article class="store__photos">
-                                    <article class="photos">
-                                        <div class="photo-wrapper" style="width: 150px; min-height: 100px;">
-											<img class="th photo" id="img_store_image1" src="<?php echo $store->store_image1; ?>" style="max-width: 150px !important; max-height: 250px !important;" alt=""/>
-                                            <!-- Filename -->
-                                             <span class="photo-label" id="image1_title"><?php $res = explode("-", $store->store_image1); echo $res[count($res)-1]; ?></span> <!-- end of filename -->
-                                             <!-- Delete action -->
-                                             <a href="#" id="delete_store_image1" title="Delete (filename goes here)"><i class="fa fa-times"></i></a>
-                                        </div> 
-
-                                        <div class="photo-wrapper" style="width: 150px; min-height: 100px;">
-                                        	
-                                            <img class="th photo" id="img_store_image2" src="<?php echo $store->store_image2; ?>" style="max-width: 150px !important; max-height: 250px !important;" alt=""/><br/>
-                                            <!-- Filename -->
-                                            <span class="photo-label" id="image2_title"><?php $res = explode("-", $store->store_image2); echo $res[count($res)-1]; ?></span>
-                                             <!-- Delete action -->
-                                            <a href="#" id="delete_store_image2" class="deleteImage" title="Delete (filename goes here)"><i class="fa fa-times"></i></a>
-                                        </div> 
-                                    </article>
-
-                                    <!-- Clearfix -->
-                                    <p class="clearfix"></p> <!-- end of clearfix -->
-
-                                    <!-- Upload image action -->
-                                    <a class="photo-upload alert" id="file_upload_span">
-                                         <i class="fa fa-upload"></i>&nbsp;&nbsp;Upload image
-                                    </a> <!-- end of upload image action -->
-                                    <input type="file" name="store_icon" id="file_store_icon" style="display: none;">
-                                    <input type="hidden" id="deleteIcon" name="store_icon_delete" value=0 />
+                                <div class="photo-wrapper">
                                     <input type="file" name="store_image1" id="file_store_image1" style="display: none;">
-                                    <input type="hidden" id="deleteStoreImage1" name="store_image1_delete" value=0 />
-                                    <input type="file" name="store_image2" id="file_store_image2" style="display: none;">
-                                    <input type="hidden" id="deleteStoreImage2" name="store_image2_delete" value=0 />
-                                    <div id="file-upload-dialog" title="File Upload" style="display: none;">
-                                    	<a href="#" id="div-icon-upload">Store Icon:</a>
-										<br>
-										<a href="#" id="div-image1-upload">Store Image1:</a>
-										<br>
-										<a href="#" id="div-image2-upload">Store Image2:</a>
-										<br>
-									</div>
-                                </article> <!-- end of store photos -->
+                                    <img class="th photo" id="img_store_image1" src="<?php echo $store->store_image1; ?>" style="max-width: 150px !important; max-height: 250px !important;" alt=""/>
+                                    <br>
+                                    Photo1: <a id="store_icon1" class="button" href="#" value="Select Logo"> Select Photo1</a>
+                                    <!-- Delete action -->
+                                    <a href="#" id="delete_store_image1" title="Delete (filename goes here)"><i class="fa fa-times"></i></a>
+                                    <span id="photo1"><?php $res = explode("-", $store->store_image1); echo $res[count($res)-1]; ?></span>
+                                </div>
+
+                                <p class="clearfix"></p> <!-- end of clearfix -->
+
+                                <div class="photo-wrapper">
+                                    <input type="file" name="store_image1" id="file_store_image2" style="display: none;">
+                                    <img class="th photo" id="img_store_image2" src="<?php echo $store->store_image2; ?>" style="max-width: 150px !important; max-height: 250px !important;" alt=""/>
+                                    <br>
+                                    Photo2: <a id="store_icon2" class="button" href="#" value="Select Logo"> Select Photo2</a>
+                                     <!-- Delete action -->
+                                    <a href="#" id="delete_store_image2" class="deleteImage" title="Delete (filename goes here)"><i class="fa fa-times"></i></a>
+                                    <span id="photo2"><?php $res = explode("-", $store->store_image2); echo $res[count($res)-1]; ?></span>
+                                </div>
                             </div>
                         </article> <!-- end of store details -->
                     </form>
@@ -390,81 +367,31 @@
 <script>
 $(function() {
     var fileUpload_changed = 0;
-    $("#file_upload_span").click(function() {
-        $( "#file-upload-dialog" ).dialog();
-    });
 
-    //If there is file element having src, that element will be hidden
-    if ($.trim($("#img_store_logo").attr("src")) != "") {
-        $("#div-icon-upload").css("display", "none");
-    }
-    if ($.trim($("#img_store_image1").attr("src")) != "") {
-        $("#div-image1-upload").css("display", "none");
-    }
-    if ($.trim($("#img_store_image2").attr("src")) != "") {
-        $("#div-image2-upload").css("display", "none");
-    }
-    
-    $("#delete_store_logo").click(function(e) {
-        fileUpload_changed++;
-        $("#img_store_logo").attr("src", "");
-        
-        $("#div-icon-upload").css("display", "block");
-        
-        $("#file_upload_span").show();
-
-        $("#deleteIcon").val(1);
-        e.preventDefault();
-    })
-    $("#delete_store_image1").click(function(e) {
-        fileUpload_changed++;
-        $("#img_store_image1").attr("src", "");
-        
-        $("#div-image1-upload").css("display", "block");
-
-        $("#file_upload_span").show();
-        $("#deleteStoreImage1").val(1);
-        e.preventDefault();
-    })
-
-    $("#delete_store_image2").click(function(e) {
-        fileUpload_changed++;
-        $("#img_store_image2").attr("src", "");
-        $("#div-image2-upload").css("display", "block");
-        $("#file_upload_span").show();
-        $("#deleteStoreImage2").val(1);
-        e.preventDefault();
-    });
-
-    $("#div-icon-upload").click(function(e) {
+    $("#store_logo").click(function(e) {
         $("#file_store_icon").click();
         e.preventDefault();
     });
-
     $("#file_store_icon").change(function() {
-        $("#div-icon-upload").text("Store Icon: Selected!");
         $("#logo_title").text($(this).val());
     })
 
-    $("#div-image1-upload").click(function(e) {
+
+    $("#store_icon1").click(function(e) {
         $("#file_store_image1").click();
         e.preventDefault();
-    });
+    })
+    $("#file_store_image1").change(function() {
+        $("#photo1").text($(this).val());
+    })
 
-    $("#file_store_image1").change(function(e) {
-        $("#div-image1-upload").text("Store Image1: Selected!");
-        $("#image1_title").text($(this).val());
-    });
 
-    $("#div-image2-upload").click(function(e) {
+    $("#store_icon2").click(function(e) {
         $("#file_store_image2").click();
-
         e.preventDefault();
-    });
+    })
     $("#file_store_image2").change(function() {
-        $("#div-image2-upload").text("Store Image2: Selected!");
-        $("#image2_title").text($(this).val());
-        alert($(this).val());
-    });
+        $("#photo2").text($(this).val());
+    })
 });
 </script>

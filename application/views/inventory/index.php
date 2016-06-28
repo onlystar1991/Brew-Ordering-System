@@ -5,22 +5,25 @@
 	    <?php
             $this->load->view("_partials/side_bar.php");
         ?>
-	    <div class="large-9 medium-8 column">
+	    <div class="large-12 column">
 	        <!-- Tabs content -->
 	        <div id="main-content" class="tabs-content">
 	            
 	            <div id="inventory" class="content active">
                     <table class="table table--dsh">
-                        <tr>
-                            <th class="table--dsh__header">SKU</th>
-                            <th class="table--dsh__header">Price</th>
-                            <th class="table--dsh__header">Name</th>
-                            <th class="table--dsh__header">Distributor</th>
-                            <th class="table--dsh__header">Quantity</th>
-                            <th class="table--dsh__header">Demand</th>
-                            <th class="table--dsh__header" style="text-align: center;"></th>
-                            <th class="table--dsh__header" style="text-align: center;"></th>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th class="table--dsh__header">SKU</th>
+                                <th class="table--dsh__header">Price</th>
+                                <th class="table--dsh__header">Name</th>
+                                <th class="table--dsh__header">Distributor</th>
+                                <th class="table--dsh__header">Quantity</th>
+                                <th class="table--dsh__header">Demand</th>
+                                <th class="table--dsh__header" style="text-align: center;"></th>
+                                <th class="table--dsh__header" style="text-align: center;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         <?php
                     	foreach($this->data['inventories'] as $inventory) {
                     		?>
@@ -64,8 +67,13 @@
                     		</tr>
                     		<?php
                     	}
+                        if (count($this->data['inventories']) == 0) {?>
+                            <tr>
+                                <td colspan="10">Sorry, There is no data to show.</td>
+                            </tr>
+                        <?php }
                         ?>
-                        
+                        </tbody>
                     </table>
 
                     <!-- Stores pagination -->

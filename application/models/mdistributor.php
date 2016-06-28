@@ -15,6 +15,9 @@ class MDistributor extends CI_Model {
     //show in index view
     var $distributor_id;
     var $distributor_name;
+    var $distributor_location;
+    var $distributor_phone;
+    var $distributor_contact;
     
     //save date in parse db
 

@@ -192,7 +192,7 @@ select {
 
 .row {
   margin: 0 auto;
-  max-width: 81.25rem;
+  /*max-width: 81.25rem;*/
   width: 100%; }
   .row:before, .row:after {
     content: " ";
@@ -3718,7 +3718,7 @@ ul.pagination {
   z-index: 1005;
   left: 0;
   background-color: #fff;
-  padding: 3.0625rem;
+  padding: 3.0625rem 3.0620rem 2rem;
   border: solid 1px #666666;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); }
   @media only screen and (max-width: 30.625em) {
@@ -3798,7 +3798,7 @@ ul.pagination {
         width: 100%; } }
   .reveal-modal.toback {
     z-index: 1003; }
-  .reveal-modal .close-reveal-modal {
+  .reveal-modal .close-reveal-modal-x {
     color: #AAAAAA;
     cursor: pointer;
     font-size: 2.5rem;
@@ -3806,7 +3806,8 @@ ul.pagination {
     line-height: 1;
     position: absolute;
     top: 0.625rem;
-    right: 1.375rem; }
+    right: 1.375rem; 
+  }
 
 .side-nav {
   display: block;
@@ -4126,7 +4127,7 @@ table {
       color: #efefef;
       font-family: 'PT Sans Narrow', sans-serif, "Helvetica Neue", Helvetica, Roboto;
       font-size: 1rem;
-      padding: 1rem 2rem; }
+      padding: 0.2rem 2rem 0.8rem; }
       .tabs dd > a:hover, .tabs .tab-title > a:hover {
         background-color: #ebebeb; }
     .tabs dd.active a, .tabs .tab-title.active a {
@@ -6231,7 +6232,7 @@ ol {
   .tabs.vertical dd > a, .tabs.vertical .tab-title > a {
     border-bottom: 1px solid #555657; }
     .tabs.vertical dd > a:hover, .tabs.vertical .tab-title > a:hover {
-      border-bottom: 0; }
+      border-bottom: 1px solid transparent }
   .tabs.vertical dd.active a, .tabs.vertical .tab-title.active a {
     border-left: 4px solid #eb6101;
     border-bottom: 0; }
@@ -6417,7 +6418,8 @@ select {
   background-position-x: -6px; }
 .tab-stores .icon {
   background-position: 26px 0;
-  transition: background-position-x .1s ease; }
+  /*transition: background-position-x .1s ease; */
+}
 
 .dd.active .tab-stores .icon, .tab-title.active .tab-stores .icon {
   background-position-x: -6px; }
@@ -6426,7 +6428,8 @@ select {
   background-position-x: -2px; }
 .tab-inventory .icon {
   background-position: 30px -31px;
-  transition: background-position-x .1s ease; }
+  /*transition: background-position-x .1s ease; */
+}
 
 .dd.active .tab-inventory .icon, .tab-title.active .tab-inventory .icon {
   background-position-x: -2px; }
@@ -6435,7 +6438,8 @@ select {
   background-position-x: -3px; }
 .tab-orders .icon {
   background-position: 30px -64px;
-  transition: background-position-x .1s ease; }
+  /*transition: background-position-x .1s ease; */
+}
 
 .dd.active .tab-orders .icon, .tab-title.active .tab-orders .icon {
   background-position-x: -3px; }
@@ -6444,7 +6448,8 @@ select {
   background-position-x: -3px; }
 .tab-dashboard .icon {
   background-position: 30px -96px;
-  transition: background-position-x .1s ease; }
+  /*transition: background-position-x .1s ease; */
+}
 
 .dd.active .tab-dashboard .icon, .tab-title.active .tab-dashboard .icon {
   background-position-x: -3px; }
@@ -6453,7 +6458,8 @@ select {
   background-position-x: -3px; }
 .tab-distributor .icon {
   background-position: 30px -128px;
-  transition: background-position-x .1s ease; }
+  /*transition: background-position-x .1s ease; */
+}
 
 .dd.active .tab-distributor .icon, .tab-title.active .tab-distributor .icon {
   background-position-x: -3px; }
@@ -6462,7 +6468,35 @@ select {
   background-position-x: -3px; }
 .tab-marketing .icon {
   background-position: 30px -160px;
-  transition: background-position-x .1s ease; }
+  /*transition: background-position-x .1s ease; */
+}
+
+.tab-users:hover .icon {
+  background-position-x: -3px; }
+.tab-users .icon {
+  background-position: 30px -255px;
+  /*transition: background-position-x .1s ease; */
+}
+.dd.active .tab-users .icon, .tab-title.active .tab-users .icon {
+  background-position-x: -3px; }
+
+.tab-chat:hover .icon {
+  background-position-x: -3px; }
+.tab-chat .icon {
+  background-position: 30px -192px;
+  /*transition: background-position-x .1s ease; */
+}
+.dd.active .tab-chat .icon, .tab-title.active .tab-chat .icon {
+  background-position-x: -3px; }
+
+.tab-help:hover .icon {
+  background-position-x: -3px; }
+.tab-help .icon {
+  background-position: 30px -223px;
+  /*transition: background-position-x .1s ease; */
+}
+.dd.active .tab-help .icon, .tab-title.active .tab-help .icon {
+  background-position-x: -3px; }
 
 .dd.active .tab-marketing .icon, .tab-title.active .tab-marketing .icon {
   background-position-x: -3px; }
@@ -6525,7 +6559,9 @@ select {
     position: absolute;
     left: 0; }
 .store-details .store__address::before {
-  content: '\f041'; }
+  content: '\f041';
+  top: 6px;
+  left: 3px; }
 .store-details .store__schedule::before {
   content: '\f017'; }
 .store-details .store__schedule li {
@@ -6570,11 +6606,17 @@ form#editStore .store__schedule {
 
 .photo-wrapper {
   display: inline-block;
-  text-align: center; }
+  text-align: left;
+  float:left; }
   .photo-wrapper .photo {
     margin-bottom: 0.75rem; }
   .photo-wrapper .photo-label {
-    font-weight: 400; }
+    font-weight: 400;
+    max-width:150px;
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:inline-block; }
 
 /*****************************************
  * INVENTORY PAGE                        *
@@ -6805,4 +6847,91 @@ ul.tsc_pagination li strong {
 }
 #file-upload-dialog {
   font-size: 15px;
+}
+
+
+/*****************************************
+ * Common PAGE                            *
+ *****************************************/
+
+.notibrew-logo {
+  padding: 21px 0;
+}
+
+#main {
+  position:relative;
+  height:100%;
+  padding-top:70px;
+}
+
+#menu-bar {
+  width:200px;
+  position:absolute;
+  top:70px;
+  bottom:0;
+  left:0;
+  z-index:1000;
+}
+
+#main > .large-12 {
+  padding-left:200px;
+  position:relative;
+  z-index:100;
+  height:100%;
+  overflow-y: auto;
+}
+
+.f-height {
+  height:100%!important;
+}
+
+#header {
+  position:absolute;
+  width:100%;
+  top:0;
+  z-index:1001;
+  height:70px;
+}
+
+#sidebottomnav {
+  position:absolute;
+  bottom:0;
+  width:100%;
+  left:0;
+  margin-bottom:0!important;
+}
+
+#sidebottomnav .tab-title {
+  position: static;
+  display:block;
+}
+
+#sidebottomnav .tab-title > a {
+    border-top: 1px solid #555657;
+}
+
+#registerStore .button {
+  display:block;
+}
+
+#registerStore a.link {
+  color: #eb6101;
+  text-decoration: underline;
+}
+
+.table--dsh__action-users {
+  text-align:center;
+}
+
+.table--dsh__action-users .button {
+  margin-bottom:0;
+}
+
+.table tr.disable {
+  opacity:0.7;
+  background: #ffe;
+}
+
+.table td {
+  max-width:250px;
 }
