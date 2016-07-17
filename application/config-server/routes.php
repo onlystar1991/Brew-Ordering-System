@@ -67,6 +67,8 @@ $route['distributor/index'] = "distributor/index";
 $route['distributor/(:num)'] = "distributor/index/(:num)";
 $route['distributor/edit/(:val)'] = "distributor/edit/(:val)";
 $route['distributor/delete/(:val)'] = "distributor/delete/(:val)";
+$route['facebook/execute'] = "facebook/execute";
+$route['facebook/index'] = "facebook/index";
 
 /* End of file routes.php */
 

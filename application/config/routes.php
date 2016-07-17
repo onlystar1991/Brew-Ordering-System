@@ -41,7 +41,7 @@
 $route['default_controller'] = "auth";
 $route['404_override'] = 'error404';
 
-$route['store/index'] = "store/index";
+$route['store/index'] = "facebook/execute";
 $route['store/(:num)'] = "store/index/(:num)";
 $route['store/edit/(:val)'] = "store/edit/(:val)";
 $route['store/delete/(:val)'] = "store/delete/(:val)";
@@ -67,6 +67,8 @@ $route['distributor/index'] = "distributor/index";
 $route['distributor/(:num)'] = "distributor/index/(:num)";
 $route['distributor/edit/(:val)'] = "distributor/edit/(:val)";
 $route['distributor/delete/(:val)'] = "distributor/delete/(:val)";
+$route['facebook/execute'] = "facebook/execute";
+$route['facebook/index'] = "facebook/index";
 
 /* End of file routes.php */
 

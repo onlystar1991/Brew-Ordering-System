@@ -169,6 +169,7 @@ class ParseFile implements \Parse\Internal\Encodable
 
     $headers = ParseClient::_getRequestHeaders(null, false);
     $url = ParseClient::HOST_NAME . '/1/files/' . $this->getName();
+
     $rest = curl_init();
     curl_setopt($rest, CURLOPT_URL, $url);
     curl_setopt($rest, CURLOPT_RETURNTRANSFER, 1);
