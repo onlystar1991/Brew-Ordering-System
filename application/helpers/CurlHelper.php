@@ -10,6 +10,7 @@ class CurlHelper
         try
         {
             //echo "start\t" . date("h:i:sa").  "\t";
+            echo $url;
             ini_set('max_execution_time', 6000); //300 seconds = 5 minutes
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, trim($url));

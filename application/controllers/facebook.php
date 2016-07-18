@@ -5,8 +5,8 @@
  * Date: 7/7/2016
  * Time: 12:28 PM
  */
-require ("application\helpers\FacebookGraphHelper.php");
-require ("application\helpers\FacebookPage.php");
+require "application\helpers\FacebookGraphHelper.php";
+require "application\helpers\FacebookPage.php";
 use application\helpers\FacebookGraphHelper;
 use application\helpers\FacebookPage;
 
@@ -56,6 +56,7 @@ class Facebook extends  CI_Controller{
 //                if(array_key_exists($facebookPage->metaData[]))
                 if($facebookPage->metaData['category_list']) {
                     $this->save($facebookPage);
+                  //  exit;
                 }
 
             }
@@ -123,11 +124,21 @@ class Facebook extends  CI_Controller{
         }
 
         $address = "";
+        $address = $address . $facebookPage->metaData['location']['street'];
+        $address = $address . ', ' . $facebookPage->metaData['location']['city'];
+        $address = $address . ', ' . $facebookPage->metaData['location']['state'] .' ' . $facebookPage->metaData['location']['zip'] ;
+        $store->set("storeAddress", $address);
+        $latitude =  $facebookPage->metaData['location']['latitude'];
+        $store->set('loc_latitude', strval($latitude));
+        $longitude =  $facebookPage->metaData['location']['longitude'];
+        $store->set('loc_longitude', strval($longitude));
+
+
 
         foreach($facebookPage->metaData as $key => $value)
         {
 
-            if($key == 'location')
+            /*if($key == 'location')
 
             {
                 foreach($value as $type => $location)
@@ -141,12 +152,12 @@ class Facebook extends  CI_Controller{
                     }
                     if($type == 'longitude')
                     {
-                        $store->set('loc_latitude', strval($location));
+                        $store->set('loc_longitude', strval($location));
                     }
                 }
                 $store->set("storeAddress", $address);
 
-            }
+            }*/
 
             if($key == 'hours')
             {
@@ -174,9 +185,9 @@ class Facebook extends  CI_Controller{
 
         try {
             $store->save();
-            var_dump($store);
             echo "After Store";
-            redirect("store/");
+            var_dump($store);
+            exit;
         } catch (ParseException $ex) {
             die("Exception Occured :".$ex->getMessage());
         }
