@@ -187,7 +187,6 @@ class Facebook extends  CI_Controller{
             $store->save();
             echo "After Store";
             var_dump($store);
-            exit;
         } catch (ParseException $ex) {
             die("Exception Occured :".$ex->getMessage());
         }
