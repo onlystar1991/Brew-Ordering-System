@@ -45,8 +45,9 @@ class Facebook extends  CI_Controller{
     {
 
      //   echo FacebookGraphHelper::getAccessToken();
-
+        echo "Inside  Facebook execute Method";
         $pages = FacebookGraphHelper::getPages();
+
         $pageMetaInfo = [];
         foreach ($pages as $key => $value) {
             foreach ($pages[$key]['data'] as $key1 => $value1) {
@@ -55,7 +56,7 @@ class Facebook extends  CI_Controller{
                 $facebookPage->setMetaData();
 //                if(array_key_exists($facebookPage->metaData[]))
                 echo "Inside Facebook::Execute before calling config";
-                $configs = include('application\config\facebook_api.php');
+                $configs = include FACEBOOK_API_CONFIG;
                 echo "Inside Facebook::Execute after calling config";
                 $categories = $configs['categories'];
                 $locations = $configs['locations'];
@@ -118,7 +119,7 @@ class Facebook extends  CI_Controller{
         $store->set("storeName", $facebookPage->metaData['global_brand_page_name']);
         //$store->set("storeName", $facebookPage->metaData['global_brand_page_name']);
         $store->set("storeDescription",$facebookPage->metaData["description"]);
-        $configs = include('application\config\facebook_api.php');
+        $configs = include FACEBOOK_API_CONFIG;
         $categories = $configs['categories'];
         var_dump($facebookPage->metaData['category_list']);
         foreach($facebookPage->metaData['category_list'] as $key => $value)
@@ -351,7 +352,7 @@ class FacebookGraphHelper
     public static function getAccessToken()
     {
 
-        $configs = include('application\config\facebook_api.php');
+        $configs = include FACEBOOK_API_CONFIG;
         $app_id = $configs['app_id'];// "159228921157128";
         $app_secret =  $configs['app_secret']; //"ccbb21ca556d2fe2595614746357d27c";
         $access_token = null;
@@ -456,7 +457,7 @@ class FacebookGraphHelper
 
     public static function getPages()
     {
-        $configs = include('application\config\facebook_api.php');
+        $configs = include FACEBOOK_API_CONFIG;
         $categories = $configs['categories'];
         $locations = $configs['locations'];
         $url = $configs['facebook_graph_url'] . 'search';
@@ -513,7 +514,7 @@ class FacebookPage
 
     public function setMetaData()
     {
-        $configs = include('application\config\facebook_api.php');
+        $configs = include FACEBOOK_API_CONFIG;
         $url = $configs['facebook_graph_url'];
         $url = $url . $this->id . "";
         $nextPage = "";
