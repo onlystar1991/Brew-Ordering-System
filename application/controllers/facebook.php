@@ -37,6 +37,7 @@ class Facebook extends  CI_Controller{
         $this->load->library("pagination");
         $this->load->library("session");
         $this->load->library('form_validation');
+        echo "Exited Facebook execute Constructor";
 
     }
 
