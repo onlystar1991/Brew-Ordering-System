@@ -28,7 +28,7 @@ class Facebook extends  CI_Controller{
     private static $master_key =   'UXkRORqhyp22XBg28k0EOxSZitOgVRv5gaDWFHJ8';
 
     public function __construct() {
-
+        echo "Inside Calling Facebook execute Constructor";
         parent::__construct();
         session_start();
         ParseClient::initialize(self::$app_id, self::$rest_key, self::$master_key);
@@ -53,9 +53,9 @@ class Facebook extends  CI_Controller{
                 $facebookPage = new FacebookPage($value1['id']);
                 $facebookPage->setMetaData();
 //                if(array_key_exists($facebookPage->metaData[]))
-
+                echo "Inside Facebook::Execute before calling config";
                 $configs = include('application\config\facebook_api.php');
-
+                echo "Inside Facebook::Execute after calling config";
                 $categories = $configs['categories'];
                 $locations = $configs['locations'];
                 $catFound = false;
