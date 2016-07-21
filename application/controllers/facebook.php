@@ -5,10 +5,10 @@
  * Date: 7/7/2016
  * Time: 12:28 PM
  */
-require "application\helpers\FacebookGraphHelper.php";
-require "application\helpers\FacebookPage.php";
-use application\helpers\FacebookGraphHelper;
-use application\helpers\FacebookPage;
+require 'application\helpers\facebook_graph_helper.php';
+require 'application\helpers\facebook_page_helper.php';
+use helpers\FacebookGraphHelper;
+use helpers\FacebookPage;
 
 require PARSE_SDK_INC;
 
@@ -54,9 +54,36 @@ class Facebook extends  CI_Controller{
                 $facebookPage = new FacebookPage($value1['id']);
                 $facebookPage->setMetaData();
 //                if(array_key_exists($facebookPage->metaData[]))
+
+                $configs = include('application\config\facebook_api.php');
+
+                $categories = $configs['categories'];
+                $locations = $configs['locations'];
+                $catFound = false;
+                $locFound = false;
                 if($facebookPage->metaData['category_list']) {
+
+                    foreach($facebookPage->metaData['category_list'] as $key => $value)
+                    {
+                        $cat = $facebookPage->metaData['category_list'][$key]['name'];
+                        if(in_array($cat, $categories))
+                        {
+                            $catFound =true;
+                            break;
+                        }
+                    }
+
+                    if($facebookPage->metaData['location']) {
+                        $state = $facebookPage->metaData['location']['state'];
+                        if($state == 'MA')
+                        {
+                            $locFound =true;
+                        }
+
+                    }
+                }
+                if($catFound && $locFound) {
                     $this->save($facebookPage);
-                  //  exit;
                 }
 
             }
@@ -104,6 +131,8 @@ class Facebook extends  CI_Controller{
                 break;
             }
         }
+
+
         echo "After Break";
 
         if ($facebookPage->metaData['picture']['data']['url']) {
