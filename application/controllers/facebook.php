@@ -5,8 +5,8 @@
  * Date: 7/7/2016
  * Time: 12:28 PM
  */
-require 'application\helpers\facebook_graph_helper.php';
-require 'application\helpers\facebook_page_helper.php';
+require FACEBOOK_GRAPH_HELPER;
+require FACEBOOK_PAGE_HELPER;
 use helpers\FacebookGraphHelper;
 use helpers\FacebookPage;
 

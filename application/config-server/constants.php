@@ -26,6 +26,9 @@ define('DIR_WRITE_MODE', 0777);
 | These modes are used when working with fopen()/popen()
 |
 */
+define('FACEBOOK_GRAPH_HELPER', $_SERVER['DOCUMENT_ROOT'].'/application/helpers/facebook_graph_helper.php');
+define('FACEBOOK_PAGE_HELPER', $_SERVER['DOCUMENT_ROOT'].'/application/helpers/facebook_page_helper.php');
+define('CURL_HELPER', $_SERVER['DOCUMENT_ROOT'].'/application/helpers/curl_helper.php');
 
 define('PARSE_SDK_INC', $_SERVER['DOCUMENT_ROOT'].'/parse-php-sdk-master/autoload.php');
 //   /intense-plains-3648

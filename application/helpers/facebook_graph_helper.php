@@ -1,7 +1,7 @@
 <?php namespace helpers;
 
 
-require 'application\helpers\curl_helper.php';
+require CURL_HELPER;
 use helpers\CurlHelper;
 //require('app\config.php');
 
