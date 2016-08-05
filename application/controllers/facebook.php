@@ -52,7 +52,7 @@ class Facebook extends  CI_Controller{
         foreach ($pages as $key => $value) {
             foreach ($pages[$key]['data'] as $key1 => $value1) {
                 //echo $value1['id'];
-                $facebookPage = new FacebookPage($value1['id']);
+                $facebookPage = new FacebookPage($value1['id'], $value1['name']);
                 $facebookPage->setMetaData();
 //                if(array_key_exists($facebookPage->metaData[]))
                 echo "Inside Facebook::Execute before calling config";
@@ -62,7 +62,7 @@ class Facebook extends  CI_Controller{
                 $locations = $configs['locations'];
                 $catFound = false;
                 $locFound = false;
-                if($facebookPage->metaData['category_list']) {
+                if (array_key_exists('category_list',$facebookPage->metaData)) {
 
                     foreach($facebookPage->metaData['category_list'] as $key => $value)
                     {
@@ -74,15 +74,23 @@ class Facebook extends  CI_Controller{
                         }
                     }
 
-                    if($facebookPage->metaData['location']) {
-                        $state = $facebookPage->metaData['location']['state'];
-                        if($state == 'MA')
-                        {
-                            $locFound =true;
-                        }
+                    if (array_key_exists('location',$facebookPage->metaData)) {
+                        if (array_key_exists('state', $facebookPage->metaData['location'])) {
+                            $state = $facebookPage->metaData['location']['state'];
+                            if ($state == 'MA') {
+                                $locFound = true;
+                            }
 
+                        }
+                        else
+                            log_message('info', '!State MA Not Found!' . $facebookPage->id . '!' . $facebookPage->name  );
                     }
+                    else
+                        log_message('info', '!State MA Not Found!' . $facebookPage->id . '!' . $facebookPage->name );
+
                 }
+                else
+                    log_message('info', '!Category Not Found!' . $facebookPage->id . '!' . $facebookPage->name );
                 if($catFound && $locFound) {
                     $this->save($facebookPage);
                 }
@@ -95,7 +103,7 @@ class Facebook extends  CI_Controller{
 
     private function save($facebookPage)
     {
-
+        log_message('info',  '!Started!' . $facebookPage->id . '!' . $facebookPage->name );
         $store = null;
         $query = new ParseQuery("Stores");
         //if (!user_can(UP_ALL))
@@ -118,10 +126,10 @@ class Facebook extends  CI_Controller{
 
         $store->set("storeName", $facebookPage->metaData['global_brand_page_name']);
         //$store->set("storeName", $facebookPage->metaData['global_brand_page_name']);
-        $store->set("storeDescription",$facebookPage->metaData["description"]);
+        if (array_key_exists('description',$facebookPage->metaData))
+            $store->set("storeDescription",$facebookPage->metaData["description"]);
         $configs = include FACEBOOK_API_CONFIG;
         $categories = $configs['categories'];
-        var_dump($facebookPage->metaData['category_list']);
         foreach($facebookPage->metaData['category_list'] as $key => $value)
         {
             $cat = $facebookPage->metaData['category_list'][$key]['name'];
@@ -144,8 +152,9 @@ class Facebook extends  CI_Controller{
             $store->set("storeImage1", $store_image1->getUrl());
 
         }
+        if (array_key_exists('cover',$facebookPage->metaData))
 
-        if ($facebookPage->metaData['cover']['source']) {
+            {
             $path_parts = pathinfo($url=strtok($facebookPage->metaData['cover']['source'],'?'));
             $store_image2 = ParseFile::createFromData(file_get_contents($facebookPage->metaData['cover']['source']), $path_parts['filename']);
             $store_image2->save();
@@ -153,61 +162,70 @@ class Facebook extends  CI_Controller{
 
         }
 
+
         $address = "";
-        $address = $address . $facebookPage->metaData['location']['street'];
-        $address = $address . ', ' . $facebookPage->metaData['location']['city'];
-        $address = $address . ', ' . $facebookPage->metaData['location']['state'] .' ' . $facebookPage->metaData['location']['zip'] ;
-        $store->set("storeAddress", $address);
-        $latitude =  $facebookPage->metaData['location']['latitude'];
-        $store->set('loc_latitude', strval($latitude));
-        $longitude =  $facebookPage->metaData['location']['longitude'];
-        $store->set('loc_longitude', strval($longitude));
+        if (array_key_exists('location',$facebookPage->metaData)) {
+            if (array_key_exists('street', $facebookPage->metaData['location']))
+                $address = $address . $facebookPage->metaData['location']['street'];
+            if (array_key_exists('city', $facebookPage->metaData['location']))
+                $address = $address . ', ' . $facebookPage->metaData['location']['city'];
+            if (array_key_exists('state', $facebookPage->metaData['location']))
+                $address = $address . ', ' . $facebookPage->metaData['location']['state'] . ' ';
+            if (array_key_exists('zip', $facebookPage->metaData['location']))
+                $address = $address . $facebookPage->metaData['location']['zip'];
+
+            $store->set("storeAddress", $address);
+        }
+        if($facebookPage->metaData['location']['latitude']) {
+            $latitude = $facebookPage->metaData['location']['latitude'];
+            $store->set('loc_latitude', strval($latitude));
+        }
+        if($facebookPage->metaData['location']['longitude']) {
+            $longitude = $facebookPage->metaData['location']['longitude'];
+            $store->set('loc_longitude', strval($longitude));
+        }
+
 
 
 
         foreach($facebookPage->metaData as $key => $value)
         {
 
-            /*if($key == 'location')
-
-            {
-                foreach($value as $type => $location)
-                {
-                    if($type == 'street')
-                        $address =  $location;
-
-                    if($type == 'latitude')
-                    {
-                        $store->set('loc_latitude', strval($location));
-                    }
-                    if($type == 'longitude')
-                    {
-                        $store->set('loc_longitude', strval($location));
-                    }
-                }
-                $store->set("storeAddress", $address);
-
-            }*/
 
             if($key == 'hours')
             {
 
                 foreach($value as $day => $hours)
                 {
-                    $store->set("fromMonday", $this->convertTime12HoursFormat($value['mon_1_open']));
-                    $store->set("toMonday",  $this->convertTime12HoursFormat($value['mon_1_close']));
-                    $store->set("fromTuesday",  $this->convertTime12HoursFormat($value['tue_1_open']));
-                    $store->set("toTuesday",  $this->convertTime12HoursFormat($value['tue_1_close']));
-                    $store->set("fromWednesday",  $this->convertTime12HoursFormat($value['wed_1_open']));
-                    $store->set("toWednesday",  $this->convertTime12HoursFormat($value['wed_1_close']));
-                    $store->set("fromThursday",  $this->convertTime12HoursFormat($value['thur_1_open']));
-                    $store->set("toThursday",  $this->convertTime12HoursFormat($value['thur_1_close']));
-                    $store->set("fromFriday",  $this->convertTime12HoursFormat($value['fri_1_open']));
-                    $store->set("toFriday",  $this->convertTime12HoursFormat($value['fri_1_close']));
-                    $store->set("fromSaturday",  $this->convertTime12HoursFormat($value['sat_1_open']));
-                    $store->set("toSaturday",  $this->convertTime12HoursFormat($value['sat_1_close']));
-                    $store->set("fromSunday",  $this->convertTime12HoursFormat($value['sun_1_open']));
-                    $store->set("toSunday",  $this->convertTime12HoursFormat($value['sun_1_close']));
+                    if (array_key_exists('mon_1_open',$value))
+                        $store->set("fromMonday", $this->convertTime12HoursFormat($value['mon_1_open']));
+
+                    if(array_key_exists('mon_1_close', $value))
+                        $store->set("toMonday",  $this->convertTime12HoursFormat($value['mon_1_close']));
+                    if(array_key_exists('tue_1_open',$value))
+                        $store->set("fromTuesday",  $this->convertTime12HoursFormat($value['tue_1_open']));
+                    if(array_key_exists('tue_1_close', $value))
+                        $store->set("toTuesday",  $this->convertTime12HoursFormat($value['tue_1_close']));
+                    if(array_key_exists('wed_1_open',$value))
+                        $store->set("fromWednesday",  $this->convertTime12HoursFormat($value['wed_1_open']));
+                    if(array_key_exists('wed_1_close',$value))
+                        $store->set("toWednesday",  $this->convertTime12HoursFormat($value['wed_1_close']));
+                    if(array_key_exists('thur_1_open',$value))
+                        $store->set("fromThursday",  $this->convertTime12HoursFormat($value['thur_1_open']));
+                    if(array_key_exists('thur_1_close',$value))
+                        $store->set("toThursday",  $this->convertTime12HoursFormat($value['thur_1_close']));
+                    if(array_key_exists('fri_1_open',$value))
+                        $store->set("fromFriday",  $this->convertTime12HoursFormat($value['fri_1_open']));
+                    if(array_key_exists('fri_1_close',$value))
+                        $store->set("toFriday",  $this->convertTime12HoursFormat($value['fri_1_close']));
+                    if(array_key_exists('sat_1_open',$value))
+                        $store->set("fromSaturday",  $this->convertTime12HoursFormat($value['sat_1_open']));
+                    if(array_key_exists('sat_1_close',$value))
+                        $store->set("toSaturday",  $this->convertTime12HoursFormat($value['sat_1_close']));
+                    if(array_key_exists('sun_1_open',$value))
+                        $store->set("fromSunday",  $this->convertTime12HoursFormat($value['sun_1_open']));
+                    if(array_key_exists('sun_1_close',$value))
+                        $store->set("toSunday",  $this->convertTime12HoursFormat($value['sun_1_close']));
 
                 }
             }
@@ -215,10 +233,11 @@ class Facebook extends  CI_Controller{
 
         try {
             $store->save();
+            log_message('info',  '!Saved!' .$facebookPage->id . '!' . $facebookPage->name );
             echo "After Store";
-            var_dump($store);
         } catch (ParseException $ex) {
-            die("Exception Occured :".$ex->getMessage());
+            log_message('error',  '!'. $ex . '!' .$facebookPage->id );
+            //die("Exception Occured :".$ex->getMessage());
         }
     }
     private function convertTime12HoursFormat($time)
@@ -459,6 +478,7 @@ class FacebookGraphHelper
     {
         $configs = include FACEBOOK_API_CONFIG;
         $categories = $configs['categories'];
+        $types = $configs['types'];
         $locations = $configs['locations'];
         $url = $configs['facebook_graph_url'] . 'search';
         $pages = [];
@@ -467,25 +487,56 @@ class FacebookGraphHelper
 
             foreach ($categories as $category) {
                 //foreach($)
-                $q = $category . ' in ' . $location;
+                $q = $category . ' in ' . $location . ', Massachusetts';
                 //$q = str_replace(' ', '%', $q);
-                $request = ['q' => $q, 'type' => 'page'];
-                $nextPage = "";
-                $facebookResponse = FacebookGraphHelper::getResponse($url, $request, true, $nextPage);
-                //$page[] = $facebookResponse;
+                foreach($types as $type) {
+                    $request = ['q' => $q, 'type' => $type];
+                    $nextPage = "";
+                    $isNextPage = true;
 
-                if(array_key_exists("data", $facebookResponse) && count($facebookResponse["data"]) >0) {
-                    $pages[] = $facebookResponse;
-                    unset($facebookResponse);
-
-                    while ($nextPage != "") {
-                        $url = $nextPage;
-                        $nextPage = "";
-                        $facebookResponse = FacebookGraphHelper::getNextPageResponse($url, $nextPage);
-                        if (count($facebookResponse["data"]) > 0) {
+                    $facebookResponse = FacebookGraphHelper::getResponse($url, $request, true, $nextPage);
+                    //$page[] = $facebookResponse;
+                    if ($facebookResponse != null) {
+                        if (array_key_exists("data", $facebookResponse) && count($facebookResponse["data"]) > 0) {
+                            echo count($facebookResponse["data"]) . 'No Data Present' . "<br/>";
                             $pages[] = $facebookResponse;
+                            //var_dump($facebookResponse);
+                            echo $url . "<br/>";
+                            foreach ($facebookResponse['data'] as $key1 => $value1) {
+                                log_message('info', '!Page!' . $value1['id'] . '!' . $value1['name']);
+                            }
+
+
+                            unset($facebookResponse);
+
+                            while ($isNextPage) {
+                                $url = $nextPage;
+                                $nextPage = "";
+                                $facebookResponse = FacebookGraphHelper::getNextPageResponse($url, $nextPage);
+                                echo "Next Page:-" . $nextPage . "<br/>";
+                                if (count($facebookResponse["data"]) > 0) {
+                                    $pages[] = $facebookResponse;
+                                    foreach ($facebookResponse['data'] as $key1 => $value1) {
+                                        log_message('info', '!Page!' . $value1['id'] . '!' . $value1['name']);
+                                    }
+
+                                    echo "Next Page:-" . count($facebookResponse["data"]) . "<br/>";
+                                } else {
+
+
+                                    $nextPage = "";
+                                    echo "Next Page:-" . count($facebookResponse["data"]) . "<br/>";
+                                    unset($facebookResponse);
+                                    $isNextPage = false;
+
+                                }
+                                $url = $configs['facebook_graph_url'] . 'search';
+
+                                echo $url . "<br/>";
+
+
+                            }
                         }
-                        unset($facebookResponse);
                     }
                 }
 
@@ -507,9 +558,12 @@ class FacebookPage
 {
     public $metaData;
     public $id;
-    function __construct($id)
+    public $name;
+    function __construct($id, $name)
     {
         $this->id = $id;
+        $this->name = $name;
+
     }
 
     public function setMetaData()
@@ -521,7 +575,6 @@ class FacebookPage
         $filter = array('fields' => "hours,location,picture,cover,description,category_list,global_brand_page_name");
         $facebookResponse = FacebookGraphHelper::getResponse($url, $filter, false, $nextPage);
         $this->metaData = $facebookResponse;
-        var_dump($facebookResponse);
 
     }
 }
