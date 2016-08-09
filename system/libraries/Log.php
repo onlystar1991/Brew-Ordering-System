@@ -104,6 +104,8 @@ class CI_Log {
 		fclose($fp);
 
 		@chmod($filepath, FILE_WRITE_MODE);
+		file_put_contents('php://stderr',$message);
+
 		return TRUE;
 	}
 
