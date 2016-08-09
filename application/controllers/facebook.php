@@ -117,6 +117,7 @@ class Facebook extends  CI_Controller{
         {
             $store = new ParseObject("Stores");
         }
+        $store->set('json_response',json_encode($facebookPage->metaData));
 
 
 
