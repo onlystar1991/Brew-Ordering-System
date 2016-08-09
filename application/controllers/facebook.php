@@ -103,7 +103,6 @@ class Facebook extends  CI_Controller{
 
     private function save($facebookPage)
     {
-        log_message('info',  '!Started!' . $facebookPage->id . '!' . $facebookPage->name );
         $store = null;
         $query = new ParseQuery("Stores");
         //if (!user_can(UP_ALL))
