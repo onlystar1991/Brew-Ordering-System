@@ -26,6 +26,8 @@ class Facebook extends  CI_Controller{
     private static $app_id     =   'upTrZvYWTbzoZKTI9Up9uGWYHiamL3LCWNvfiTrx';
     private static $rest_key   =   'NUyL27OK8vIdZGtiqwskfVyPAiCT0Z6zCm7d3NXG';
     private static $master_key =   'UXkRORqhyp22XBg28k0EOxSZitOgVRv5gaDWFHJ8';
+    private static $saveCounter = 0;
+
 
     public function __construct() {
         echo "Inside Calling Facebook execute Constructor";
@@ -269,7 +271,7 @@ class Facebook extends  CI_Controller{
 
         try {
             $store->save();
-            log_message('info',  '!Saved!' .$facebookPage->id . '!' . $facebookPage->name );
+            log_message('info',  '!Saved!' .$facebookPage->id . '!' . $facebookPage->name . '!' . Facebook::$saveCounter++ );
             echo "After Store";
         } catch (ParseException $ex) {
             log_message('error',  '!'. $ex . '!' .$facebookPage->id );
@@ -403,6 +405,7 @@ class CurlHelper
 }
 class FacebookGraphHelper
 {
+    private static $pageCounter = 0;
 
     public static function getAccessToken()
     {
@@ -539,7 +542,8 @@ class FacebookGraphHelper
                             //var_dump($facebookResponse);
                             echo $url . "<br/>";
                             foreach ($facebookResponse['data'] as $key1 => $value1) {
-                                log_message('info', '!Page!' . $value1['id'] . '!' . $value1['name']);
+
+                                log_message('info', '!Page!' . $value1['id'] . '!' . $value1['name'] . '!' . FacebookGraphHelper::$pageCounter++  );
                             }
 
 
@@ -553,7 +557,7 @@ class FacebookGraphHelper
                                 if (count($facebookResponse["data"]) > 0) {
                                     $pages[] = $facebookResponse;
                                     foreach ($facebookResponse['data'] as $key1 => $value1) {
-                                        log_message('info', '!Page!' . $value1['id'] . '!' . $value1['name']);
+                                        log_message('info', '!Page!' . $value1['id'] . '!' . $value1['name'] . '!' . FacebookGraphHelper::$pageCounter++);
                                     }
 
                                     echo "Next Page:-" . count($facebookResponse["data"]) . "<br/>";
