@@ -272,7 +272,7 @@ class Facebook extends  CI_Controller{
         try {
             $store->save();
             log_message('info',  '!Saved!' .$facebookPage->id . '!' . $facebookPage->name . '!' . Facebook::$saveCounter++ );
-            echo "After Store";
+            //echo "After Store";
         } catch (ParseException $ex) {
             log_message('error',  '!'. $ex . '!' .$facebookPage->id );
             //die("Exception Occured :".$ex->getMessage());
@@ -289,7 +289,7 @@ class Facebook extends  CI_Controller{
     }
     public function index() {
 
-        echo "GetStoreList";
+        //echo "GetStoreList";
         $all_stores = $this->getStorelist();
         $result_array = array();
         $this->data['stores'] = array();
@@ -340,7 +340,7 @@ class Facebook extends  CI_Controller{
     }
 
     private function getStoreList() {
-        echo "GetStoreList";
+        //echo "GetStoreList";
         $query = new ParseQuery("Stores");
        // if (!user_can(UP_ALL))
             $query->equalTo("storeOwner","N/A");
@@ -375,7 +375,7 @@ class CurlHelper
         try
         {
             //echo "start\t" . date("h:i:sa").  "\t";
-            echo $url;
+            //echo $url;
             ini_set('max_execution_time', 6000); //300 seconds = 5 minutes
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, trim($url));
@@ -537,10 +537,10 @@ class FacebookGraphHelper
                     //$page[] = $facebookResponse;
                     if ($facebookResponse != null) {
                         if (array_key_exists("data", $facebookResponse) && count($facebookResponse["data"]) > 0) {
-                            echo count($facebookResponse["data"]) . 'No Data Present' . "<br/>";
+                            //echo count($facebookResponse["data"]) . 'No Data Present' . "<br/>";
                             $pages[] = $facebookResponse;
                             //var_dump($facebookResponse);
-                            echo $url . "<br/>";
+                            // $url . "<br/>";
                             foreach ($facebookResponse['data'] as $key1 => $value1) {
 
                                 log_message('info', '!Page!' . $value1['id'] . '!' . $value1['name'] . '!' . FacebookGraphHelper::$pageCounter++  );
@@ -553,26 +553,26 @@ class FacebookGraphHelper
                                 $url = $nextPage;
                                 $nextPage = "";
                                 $facebookResponse = FacebookGraphHelper::getNextPageResponse($url, $nextPage);
-                                echo "Next Page:-" . $nextPage . "<br/>";
+                                // "Next Page:-" . $nextPage . "<br/>";
                                 if (count($facebookResponse["data"]) > 0) {
                                     $pages[] = $facebookResponse;
                                     foreach ($facebookResponse['data'] as $key1 => $value1) {
                                         log_message('info', '!Page!' . $value1['id'] . '!' . $value1['name'] . '!' . FacebookGraphHelper::$pageCounter++);
                                     }
 
-                                    echo "Next Page:-" . count($facebookResponse["data"]) . "<br/>";
+                                    // "Next Page:-" . count($facebookResponse["data"]) . "<br/>";
                                 } else {
 
 
                                     $nextPage = "";
-                                    echo "Next Page:-" . count($facebookResponse["data"]) . "<br/>";
+                                    // "Next Page:-" . count($facebookResponse["data"]) . "<br/>";
                                     unset($facebookResponse);
                                     $isNextPage = false;
 
                                 }
                                 $url = $configs['facebook_graph_url'] . 'search';
 
-                                echo $url . "<br/>";
+                                // $url . "<br/>";
 
 
                             }
