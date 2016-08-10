@@ -271,7 +271,7 @@ class Facebook extends  CI_Controller{
 
         try {
             $store->save();
-            log_message('info',  '!Saved!' .$facebookPage->id . '!' . $facebookPage->name . '!' . Facebook::$saveCounter++ );
+            log_message('info',  '!Saved!' .$facebookPage->id . '!' . $facebookPage->name   );
             //echo "After Store";
         } catch (ParseException $ex) {
             log_message('error',  '!'. $ex . '!' .$facebookPage->id );
@@ -405,7 +405,7 @@ class CurlHelper
 }
 class FacebookGraphHelper
 {
-    private static $pageCounter = 0;
+   // private static $pageCounter = 0;
 
     public static function getAccessToken()
     {
@@ -543,7 +543,7 @@ class FacebookGraphHelper
                             // $url . "<br/>";
                             foreach ($facebookResponse['data'] as $key1 => $value1) {
 
-                                log_message('info', '!Page!' . $value1['id'] . '!' . $value1['name'] . '!' . FacebookGraphHelper::$pageCounter++  );
+                                log_message('info', '!Page!' . $value1['id'] . '!' . $value1['name'] . '!' . $location  );
                             }
 
 
@@ -557,7 +557,7 @@ class FacebookGraphHelper
                                 if (count($facebookResponse["data"]) > 0) {
                                     $pages[] = $facebookResponse;
                                     foreach ($facebookResponse['data'] as $key1 => $value1) {
-                                        log_message('info', '!Page!' . $value1['id'] . '!' . $value1['name'] . '!' . FacebookGraphHelper::$pageCounter++);
+                                        log_message('info', '!Page!' . $value1['id'] . '!' . $value1['name'] . '!' . $location);
                                     }
 
                                     // "Next Page:-" . count($facebookResponse["data"]) . "<br/>";
