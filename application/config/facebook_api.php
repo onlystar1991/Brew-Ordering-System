@@ -14,8 +14,8 @@ return array(
     //'categories' => ['Brewery','Breweries'],
     //'locations' =>  ['Massachusetts'],
     'locations' => [
-        'Allston',
-        'Abington',
+        'Allston'
+        /*'Abington',
         'Acton',
         'Acushnet',
         'Adams',
@@ -179,7 +179,7 @@ return array(
         'Lunenburg',
         'Lynn',
         'Lynnfield',
-        /*'Malden',
+        'Malden',
         'Manchester-by-the-Sea',
         'Mansfield',
         'Marblehead',
