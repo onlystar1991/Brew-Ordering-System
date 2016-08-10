@@ -210,7 +210,7 @@ return array(
         'Monterey',
         'Montgomery',
         'Mount Washington',
-        'Nahant',
+        /*'Nahant',
         'Nantucket',
         'Natick',
         'Needham',
@@ -365,7 +365,7 @@ return array(
         'Worcester',
         'Worthington',
         'Wrentham',
-        'Yarmouth'
+        'Yarmouth'*/
 
     ],
     'types' => ['page', 'place']

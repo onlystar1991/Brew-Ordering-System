@@ -105,7 +105,9 @@ class Facebook extends  CI_Controller{
     {
         $store = null;
         $query = new ParseQuery("Stores");
-        //if (!user_can(UP_ALL))
+
+        $isPublished = true;
+        $missingDetails = "";
         $query->equalTo("facebook_page_id", $facebookPage->id);
         $result = $query->first();
         if($result)
@@ -143,15 +145,21 @@ class Facebook extends  CI_Controller{
 
 
         echo "After Break";
+        if (array_key_exists('picture',$facebookPage->metaData) ) {
+            if ($facebookPage->metaData['picture']['data']['url']) {
+                $path_parts = pathinfo($url = strtok($facebookPage->metaData['picture']['data']['url'], '?'));
+                $store_image1 = ParseFile::createFromData(file_get_contents($facebookPage->metaData['picture']['data']['url']), $path_parts['filename']);
+                $store_image1->save();
+                $store->set("storeIcon", $store_image1->getUrl());
+                $store->set("storeImage1", $store_image1->getUrl());
 
-        if ($facebookPage->metaData['picture']['data']['url']) {
-            $path_parts = pathinfo($url=strtok($facebookPage->metaData['picture']['data']['url'],'?'));
-            $store_image1 = ParseFile::createFromData(file_get_contents($facebookPage->metaData['picture']['data']['url']), $path_parts['filename']);
-            $store_image1->save();
-            $store->set("storeIcon", $store_image1->getUrl());
-            $store->set("storeImage1", $store_image1->getUrl());
-
+            }
         }
+        else {
+            $isPublished = false;
+            $missingDetails = $missingDetails . "Photo,";
+        }
+
         if (array_key_exists('cover',$facebookPage->metaData))
 
             {
@@ -167,14 +175,40 @@ class Facebook extends  CI_Controller{
         if (array_key_exists('location',$facebookPage->metaData)) {
             if (array_key_exists('street', $facebookPage->metaData['location']))
                 $address = $address . $facebookPage->metaData['location']['street'];
+            else
+            {
+                $isPublished = false;
+                $missingDetails = $missingDetails . "Street,";
+            }
             if (array_key_exists('city', $facebookPage->metaData['location']))
                 $address = $address . ', ' . $facebookPage->metaData['location']['city'];
+            else
+            {
+                $isPublished = false;
+                $missingDetails = $missingDetails . "City,";
+            }
             if (array_key_exists('state', $facebookPage->metaData['location']))
                 $address = $address . ', ' . $facebookPage->metaData['location']['state'] . ' ';
+            else
+            {
+                $isPublished = false;
+                $missingDetails = $missingDetails . "State,";
+            }
             if (array_key_exists('zip', $facebookPage->metaData['location']))
                 $address = $address . $facebookPage->metaData['location']['zip'];
+            else
+            {
+                $hasAddress = false;
+                $missingDetails = $missingDetails . "Zip,";
+            }
 
             $store->set("storeAddress", $address);
+        }
+        else
+        {
+            $isPublished =false;
+            $missingDetails = $missingDetails . "Address,";
+
         }
         if($facebookPage->metaData['location']['latitude']) {
             $latitude = $facebookPage->metaData['location']['latitude'];
@@ -230,6 +264,8 @@ class Facebook extends  CI_Controller{
                 }
             }
         }
+        $store->set('is_published', $isPublished);
+        $store->set('missing_details', $missingDetails);
 
         try {
             $store->save();
@@ -572,7 +608,7 @@ class FacebookPage
         $url = $configs['facebook_graph_url'];
         $url = $url . $this->id . "";
         $nextPage = "";
-        $filter = array('fields' => "hours,location,picture,cover,description,category_list,global_brand_page_name");
+        $filter = array('fields' => "hours,location,picture.height(961),cover.height(961),description,category_list,global_brand_page_name");
         $facebookResponse = FacebookGraphHelper::getResponse($url, $filter, false, $nextPage);
         $this->metaData = $facebookResponse;
 
