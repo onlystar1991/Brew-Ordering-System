@@ -16,7 +16,7 @@ return array(
     'locations' => [
         'Allston',
         'Leominster'
-        /*'Abington',
+        'Abington',
         'Acton',
         'Acushnet',
         'Adams',
@@ -366,7 +366,7 @@ return array(
         'Worcester',
         'Worthington',
         'Wrentham',
-        'Yarmouth'*/
+        'Yarmouth'
 
     ],
     'types' => ['page', 'place']
