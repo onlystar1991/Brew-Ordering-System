@@ -17,7 +17,7 @@ final class ParseClient
    * Constant for the API Server Host Address.
    * @ignore
    */
-  const HOST_NAME = 'intense-plains-3648.herokuapp.com';
+  const HOST_NAME = 'http://intense-plains-3648.herokuapp.com';
 
   /**
    * @var - String for applicationId.
