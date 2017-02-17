@@ -2,7 +2,8 @@
 
 namespace Parse;
 
-use Parse\Internal\Encodable;
+/*use Parse\Internal\Encodable;*/
+use /parse
 
 /**
  * ParseClient - Main class for Parse initialization and communication
