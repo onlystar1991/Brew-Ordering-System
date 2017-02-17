@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>
-		NotiBrew - Sign In
+		Notibrew - Sign In
 	</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width">
@@ -37,7 +37,7 @@
 			<fieldset>
 				<?php echo (validation_errors() != '') ? "<div class='alert'>Invalid Login.</div>" : "" ; ?>
 				<div class="fields">
-					<input name="username" placeholder="Username" id="id_username" tabindex="1" type="text" text="" placeholder="User Name" >
+					<input name="username" placeholder="Username" id="id_username" tabindex="1" type="text" text="" placeholder="Username" >
 
 					<input name="password" placeholder="Password" id="id_password" tabindex="2" type="password" text="" placeholder="Password">
 				</div>
@@ -45,7 +45,7 @@
 				<a href="#" title="" tabindex="3" class="forgot-password">Forgot?</a>
 
 				<button type="submit" class="btn btn-primary btn-block" tabindex="4">Sign In</button>
-				<p class="to-register">New to NotiBrew?&nbsp;&nbsp;&nbsp;<a href="<?=base_url()?>auth/signup">Create an account.</a></p>
+				<p class="to-register">New to Notibrew?&nbsp;&nbsp;&nbsp;<a href="<?=base_url()?>auth/signup">Create an account.</a></p>
 			</fieldset>
 		</form>
 
