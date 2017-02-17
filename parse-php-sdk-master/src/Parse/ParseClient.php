@@ -2,8 +2,7 @@
 
 namespace Parse;
 
-/*use Parse\Internal\Encodable;*/
-use /parse
+use Parse\Internal\Encodable;
 
 /**
  * ParseClient - Main class for Parse initialization and communication
@@ -44,7 +43,8 @@ final class ParseClient
    * Constant for version string to include with requests.
    * @ignore
    */
-  const VERSION_STRING = 'php1.0.0';
+  /*const VERSION_STRING = 'php1.0.0';*/
+  const VERSION_STRING = 'parse';
 
   /**
    * Parse\Client::initialize, must be called before using Parse features.
