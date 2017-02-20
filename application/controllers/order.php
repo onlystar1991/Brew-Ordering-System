@@ -29,6 +29,7 @@ class Order extends CI_Controller {
         parent::__construct();
         session_start();
         ParseClient::initialize(self::$app_id, self::$rest_key, self::$master_key);
+        ParseClient::setServerURL('https://notibrew-beta.herokuapp.com');
         $this->load->model('morder');
         $this->load->model('minventory');
         $this->load->model('mdistributor');

@@ -28,6 +28,7 @@ class Marketing extends CI_Controller{
         
         parent::__construct();
         ParseClient::initialize(self::$app_id, self::$rest_key, self::$master_key);
+        ParseClient::setServerURL('https://notibrew-beta.herokuapp.com');
         $this->load->model('mmarketing');
         $this->load->helper('url');
         $this->load->library("pagination");

@@ -32,6 +32,7 @@ class Users extends CI_Controller{
         parent::__construct();
         //TODO:  Add extra constructor Code
         ParseClient::initialize(self::$app_id, self::$rest_key, self::$master_key);
+        ParseClient::setServerURL('https://notibrew-beta.herokuapp.com');
         $this->load->library("session");
         $this->load->library("pagination");
         $this->load->helper('url');
