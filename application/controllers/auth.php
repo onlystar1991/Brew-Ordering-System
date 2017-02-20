@@ -41,6 +41,7 @@ class Auth extends CI_Controller {
         $this->load->library('session');
         session_start();
         ParseClient::initialize(self::$app_id, self::$rest_key, self::$master_key);
+        ParseClient::setServerURL('https://notibrew-beta.herokuapp.com');
         ParseClient::setStorage( new ParseSessionStorage() );
         $this->load->helper(array('form'));
         $this->load->library('form_validation');
