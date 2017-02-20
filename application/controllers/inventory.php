@@ -30,7 +30,7 @@ class Inventory extends CI_Controller{
 
         parent::__construct();
         ParseClient::initialize(self::$app_id, self::$rest_key, self::$master_key);
-        ParseClient::setServerURL('https://notibrew-beta.herokuapp.com');
+        ParseClient::setServerURL('https://notibrew-beta.herokuapp.com', 'parse');
         $this->load->model('minventory');
         $this->load->model('mstore');
         $this->load->helper('url');

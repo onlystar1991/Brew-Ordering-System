@@ -35,7 +35,7 @@ class Distributor extends CI_Controller {
 
         parent::__construct();
         ParseClient::initialize(self::$app_id, self::$rest_key, self::$master_key);
-        ParseClient::setServerURL('https://notibrew-beta.herokuapp.com');
+        ParseClient::setServerURL('https://notibrew-beta.herokuapp.com', 'parse');
         $this->load->model('mdistributor');
         $this->load->model('mdelivery');
         $this->load->model('morder');

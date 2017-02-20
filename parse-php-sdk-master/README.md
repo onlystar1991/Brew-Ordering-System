@@ -2,19 +2,19 @@ Parse PHP SDK
 -------------
 
 The Parse PHP SDK gives you access to the powerful Parse cloud platform
-from your PHP app or script.
+from your PHP app or script.  Updated to work with the self-hosted Parse Server: https://github.com/parseplatform/parse-server
 
 Installation
 ------------
 
-[Get Composer], the PHP package manager.  Then create a composer.json file in
+[Get Composer], the PHP package manager. Then create a composer.json file in
  your projects root folder, containing:
 
 ```json
 {
-  "require": {
-    "parse/php-sdk" : "1.0.*"
-  }
+    "require": {
+        "parse/php-sdk" : "1.2.*"
+    }
 }
 ```
 
@@ -24,6 +24,8 @@ and then require it from your PHP script:
 ```php
 require 'vendor/autoload.php';
 ```
+
+Note: The Parse PHP SDK requires PHP 5.4 or newer.
 
 Alternative Method
 ------------------
@@ -42,14 +44,31 @@ After including the required files from the SDK, you need to initalize the Parse
 
 ```php
 ParseClient::initialize( $app_id, $rest_key, $master_key );
+// Users of Parse Server will need to point ParseClient at their remote URL and Mount Point:
+ParseClient::setServerURL('https://my-parse-server.com:port','parse');
 ```
+
+If your server does not use or require a REST key you may initialize the ParseClient as follows, safely omitting the REST key:
+
+```php
+ParseClient::initialize( $app_id, null, $master_key );
+// Users of Parse Server will need to point ParseClient at their remote URL and Mount Point:
+ParseClient::setServerURL('https://my-parse-server.com:port','parse');
+```
+
+Notice
+Parse server's default port is `1337` and the second parameter `parse` is the route prefix of your parse server.
+
+For example if your parse server's url is `http://example.com:1337/parse` then you can set the server url using the following snippet
+
+`ParseClient::setServerURL('https://example.com:1337','parse');`
 
 Usage
 -----
 
 Check out the [Parse PHP Guide] for the full documentation.
 
-Add the "use" declarations where you'll be using the classes.  For all of the
+Add the "use" declarations where you'll be using the classes. For all of the
 sample code in this file:
 
 ```php
@@ -63,6 +82,7 @@ use Parse\ParseException;
 use Parse\ParseAnalytics;
 use Parse\ParseFile;
 use Parse\ParseCloud;
+use Parse\ParseClient;
 ```
 
 Objects:
@@ -77,11 +97,14 @@ $object->set("elephant", "php");
 $object->set("today", new DateTime());
 $object->setArray("mylist", [1, 2, 3]);
 $object->setAssociativeArray(
-  "languageTypes", array("php" => "awesome", "ruby" => "wtf")
+    "languageTypes", array("php" => "awesome", "ruby" => "wtf")
 );
 
-// Save:
+// Save normally:
 $object->save();
+
+// Or pass true to use the master key to override ACLs when saving:
+$object->save(true);
 ```
 
 Users:
@@ -92,16 +115,16 @@ $user = new ParseUser();
 $user->setUsername("foo");
 $user->setPassword("Q2w#4!o)df");
 try {
-  $user->signUp();
+    $user->signUp();
 } catch (ParseException $ex) {
-  // error in $ex->getMessage();
+    // error in $ex->getMessage();
 }
 
 // Login
 try {
-  $user = ParseUser::logIn("foo", "Q2w#4!o)df");
+    $user = ParseUser::logIn("foo", "Q2w#4!o)df");
 } catch(ParseException $ex) {
-  // error in $ex->getMessage();
+    // error in $ex->getMessage();
 }
 
 // Current user
@@ -135,8 +158,11 @@ $object = $query->get("anObjectId");
 
 $query->limit(10); // default 100, max 1000
 
-// All results:
+// All results, normally:
 $results = $query->find();
+
+// Or pass true to use the master key to override ACLs when querying:
+$results = $query->find(true);
 
 // Just the first result:
 $first = $query->first();
@@ -144,7 +170,7 @@ $first = $query->first();
 // Process ALL (without limit) results with "each".
 // Will throw if sort, skip, or limit is used.
 $query->each(function($obj) {
-  echo $obj->getObjectId();
+    echo $obj->getObjectId();
 });
 ```
 
@@ -157,9 +183,9 @@ $results = ParseCloud::run("aCloudFunction", array("from" => "php"));
 Analytics:
 
 ```php
-PFAnalytics::trackEvent("logoReaction", array(
-  "saw" => "elephant",
-  "said" => "cute"
+ParseAnalytics::track("logoReaction", array(
+    "saw" => "elephant",
+    "said" => "cute"
 ));
 ```
 
@@ -175,7 +201,7 @@ $contents = $file->getData();
 
 // Upload from a local file:
 $file = ParseFile::createFromFile(
-  "/tmp/foo.bar", "Parse.txt", "text/plain"
+    "/tmp/foo.bar", "Parse.txt", "text/plain"
 );
 
 // Upload from variable contents (string, binary)
@@ -187,26 +213,67 @@ Push:
 ```php
 $data = array("alert" => "Hi!");
 
+// Parse Server has a few requirements:
+// - The master key is required for sending pushes, pass true as the second parameter
+// - You must set your recipients by using 'channels' or 'where', but you must not pass both
+
+
 // Push to Channels
 ParsePush::send(array(
-  "channels" => ["PHPFans"],
-  "data" => $data
-));
+    "channels" => ["PHPFans"],
+    "data" => $data
+), true);
+
 
 // Push to Query
 $query = ParseInstallation::query();
 $query->equalTo("design", "rad");
+
 ParsePush::send(array(
-  "where" => $query,
-  "data" => $data
-));
+    "where" => $query,
+    "data" => $data
+), true);
+
+
+// Get Push Status
+$response = ParsePush::send(array(
+    "channels" => ["StatusFans"],
+    "data" => $data
+), true);
+
+if(ParsePush::hasStatus($response)) {
+
+    // Retrieve PushStatus object
+    $pushStatus = ParsePush::getStatus($response);
+    
+    // get push status string
+    $status = $pushStatus->getPushStatus();
+    
+    if($status == "succeeded") {
+        // handle a successful push request
+        
+    } else if($status == "running") {
+        // handle a running push request
+        
+    } else if($status == "failed") {
+        // push request did not succeed
+        
+    }
+    
+    // get # pushes sent
+    $sent = $pushStatus->getPushesSent();
+    
+    // get # pushes failed
+    $failed = $pushStatus->getPushesFailed();
+    
+}
 ```
 
 Contributing / Testing
 ----------------------
 
 See the CONTRIBUTORS.md file for information on testing and contributing to
-the Parse PHP SDK.  We welcome fixes and enhancements.
+the Parse PHP SDK. We welcome fixes and enhancements.
 
 [Get Composer]: https://getcomposer.org/download/
-[Parse PHP Guide]: https://www.parse.com/docs/php_guide
+[Parse PHP Guide]: https://www.parse.com/docs/php/guide
