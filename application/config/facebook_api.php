@@ -15,7 +15,7 @@ return array(
     //'locations' =>  ['Massachusetts'],
     'locations' => [
         'Allston',
-        'Leominster'
+        'Leominster',
         'Abington',
         'Acton',
         'Acushnet',
@@ -366,7 +366,7 @@ return array(
         'Worcester',
         'Worthington',
         'Wrentham',
-        'Yarmouth'
+        'Yarmouth',
 
     ],
     'types' => ['page', 'place']
