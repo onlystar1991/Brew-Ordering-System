@@ -30,7 +30,6 @@ class Facebook extends  CI_Controller{
 
 
     public function __construct() {
-        echo "Inside Calling Facebook execute Constructor";
         parent::__construct();
         session_start();
         ParseClient::initialize(self::$app_id, self::$rest_key, self::$master_key);
@@ -40,17 +39,13 @@ class Facebook extends  CI_Controller{
         $this->load->library("pagination");
         $this->load->library("session");
         $this->load->library('form_validation');
-        echo "Exited Facebook execute Constructor";
-
     }
 
     public  function execute()
     {
 
-     //   echo FacebookGraphHelper::getAccessToken();
-        echo "Inside  Facebook execute Method";
         $pages = FacebookGraphHelper::getPages();
-
+        var_dump($pages); die();
         $pageMetaInfo = [];
         foreach ($pages as $key => $value) {
             foreach ($pages[$key]['data'] as $key1 => $value1) {
@@ -550,6 +545,11 @@ class FacebookGraphHelper
 
                             unset($facebookResponse);
 
+                            if ($nextPage) {
+                                $isNextPage = true;
+                            } else {
+                                $isNextPage = false;
+                            }
                             while ($isNextPage) {
                                 $url = $nextPage;
                                 $nextPage = "";
