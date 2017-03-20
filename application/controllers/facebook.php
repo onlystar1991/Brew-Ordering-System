@@ -557,7 +557,7 @@ class FacebookGraphHelper
                                 $nextPage = "";
                                 $facebookResponse = FacebookGraphHelper::getNextPageResponse($url, $nextPage);
                                 // "Next Page:-" . $nextPage . "<br/>";
-                                var_dump($facebookResponse); echo '<br>';echo '<br>';
+                                
                                 if (count($facebookResponse["data"]) > 0) {
                                     $pages[] = $facebookResponse;
                                     foreach ($facebookResponse['data'] as $key1 => $value1) {
