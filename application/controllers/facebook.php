@@ -46,6 +46,7 @@ class Facebook extends  CI_Controller{
 
         $pages = FacebookGraphHelper::getPages();
         
+        var_dump($pages); die();
         $pageMetaInfo = [];
         foreach ($pages as $key => $value) {
             foreach ($pages[$key]['data'] as $key1 => $value1) {
@@ -542,8 +543,7 @@ class FacebookGraphHelper
                                 log_message('info', '!Page!' . $value1['id'] . '!' . $value1['name'] . '!' . $location  );
                             }
 
-                            var_dump($facebookResponse); echo '<br>';echo '<br>';
-
+                            
                             unset($facebookResponse);
 
                             if ($nextPage) {
