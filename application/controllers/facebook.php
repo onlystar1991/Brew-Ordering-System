@@ -50,7 +50,7 @@ class Facebook extends  CI_Controller{
         foreach ($pages as $key => $value) {
             foreach ($pages[$key]['data'] as $key1 => $value1) {
                 //echo $value1['id'];
-                var_dump($value1); die();
+                // var_dump($value1); die();
                 $facebookPage = new FacebookPage($value1['id'], $value1['name']);
                 $facebookPage->setMetaData();
 //                if(array_key_exists($facebookPage->metaData[]))
@@ -91,6 +91,7 @@ class Facebook extends  CI_Controller{
                 else
                     log_message('info', '!Category Not Found!' . $facebookPage->id . '!' . $facebookPage->name );
                 if($catFound && $locFound) {
+                    var_dump($facebookPage); die();
                     $this->save($facebookPage);
                 }
 
