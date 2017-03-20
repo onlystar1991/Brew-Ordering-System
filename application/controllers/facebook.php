@@ -45,12 +45,12 @@ class Facebook extends  CI_Controller{
     {
 
         $pages = FacebookGraphHelper::getPages();
-        
-        var_dump($pages); die();
+
         $pageMetaInfo = [];
         foreach ($pages as $key => $value) {
             foreach ($pages[$key]['data'] as $key1 => $value1) {
                 //echo $value1['id'];
+                var_dump($value1); die();
                 $facebookPage = new FacebookPage($value1['id'], $value1['name']);
                 $facebookPage->setMetaData();
 //                if(array_key_exists($facebookPage->metaData[]))
