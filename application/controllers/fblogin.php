@@ -4,7 +4,7 @@ class fblogin extends CI_Controller
 	function __construct() {
 		parent::__construct();
 		// Load user model
-		$this->load->model('user');
+		// $this->load->model('user');
 	}
 
 	public function index(){
@@ -36,7 +36,7 @@ class fblogin extends CI_Controller
 			$userData['profile_url'] = 'https://www.facebook.com/'.$userProfile['id'];
 			$userData['picture_url'] = $userProfile['picture']['data']['url'];
 			// Insert or update user data
-			$userID = $this->user->checkUser($userData);
+			// $userID = $this->user->checkUser($userData);
 			if(!empty($userID)){
 				$data['userData'] = $userData;
 				$this->session->set_userdata('userData',$userData);
