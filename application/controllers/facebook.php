@@ -41,6 +41,15 @@ class Facebook extends  CI_Controller{
         $this->load->library('form_validation');
     }
 
+    public function login() {
+        
+    }
+
+    public function events() {
+        $events = FacebookGraphHelper::getEvents();
+        var_dump($events); die();
+    }
+
     public  function execute()
     {
 
@@ -68,7 +77,7 @@ class Facebook extends  CI_Controller{
                         $cat = $facebookPage->metaData['category_list'][$key]['name'];
                         if(in_array($cat, $categories))
                         {
-                            $catFound =true;
+                            $catFound = true;
                             break;
                         }
                     }
@@ -430,8 +439,8 @@ class FacebookGraphHelper
         }
         return $access_token;
     }
-    public static function getResponse($url, $filter, $isPaging = true, &$nextPage)
-    {
+
+    public static function getResponse($url, $filter, $isPaging = true, &$nextPage) {
 
         try {
             $queryString = $filter;
@@ -439,6 +448,7 @@ class FacebookGraphHelper
                 //echo $key;
             }
             $access_token = FacebookGraphHelper::getAccessToken();
+            echo '<br><br>';var_dump($access_token); echo '<br><br>';
             $queryString += array('access_token' => $access_token);
             $queryString += array('limit' => 50);
             $url = $url. "?" .  http_build_query($queryString);
@@ -446,30 +456,20 @@ class FacebookGraphHelper
             $jsonResponse = $curlHelper->execute($url);
 
             $facebookData = json_decode($jsonResponse,true);
-            if(json_last_error() >0 )
-            {
+            if(json_last_error() >0 ) {
                 echo json_last_error_msg();
-
             }
-            if($facebookData != null && array_key_exists("error", $facebookData) )
-            {
-
+            if($facebookData != null && array_key_exists("error", $facebookData) ) {
                 echo $facebookData["error"]["message"];
-
-            }
-            else
-            {
+            } else {
                 if ($isPaging == true) {
                     if (FacebookGraphHelper::nextPageExists($facebookData) == true)
                         $nextPage = $facebookData["paging"]["next"];
                 }
             }
-        }
-        catch(exception $ex)
-        {
+        } catch(exception $ex) {
             echo $ex;
         }
-
         return $facebookData;
     }
 
@@ -511,11 +511,85 @@ class FacebookGraphHelper
         return $value;
     }
 
+    public static function getEvents() {
+        $configs = include FACEBOOK_API_CONFIG;
+        $categories = $configs['categories'];
+        $types = $configs['events'];
+        $locations = $configs['locations'];
+        $url = $configs['facebook_graph_url'] . 'search';
+        $events = [];
+        foreach ($locations as $location){
+
+            foreach ($categories as $category) {
+                //foreach($)
+                $q = $category . ' in ' . $location . ', Massachusetts';
+                //$q = str_replace(' ', '%', $q);
+                foreach($types as $type) {
+                    $request = ['q' => $q, 'type' => $type];
+                    $nextEvent = "";
+                    $isNextEvent = true;
+                    var_dump($url); echo '<br><br>'; var_dump($request); echo '<br>';
+                    $facebookResponse = FacebookGraphHelper::getResponse($url, $request, true, $nextEvent);
+
+                    var_dump($facebookResponse); die();
+                    //$page[] = $facebookResponse;
+                    if ($facebookResponse != null) {
+                        if (array_key_exists("data", $facebookResponse) && count($facebookResponse["data"]) > 0) {
+                            //echo count($facebookResponse["data"]) . 'No Data Present' . "<br/>";
+                            $events[] = $facebookResponse;
+                            //var_dump($facebookResponse);
+                            // $url . "<br/>";
+                            foreach ($facebookResponse['data'] as $key1 => $value1) {
+
+                                log_message('info', '!Page!' . $value1['id'] . '!' . $value1['name'] . '!' . $location  );
+                            }
+
+                            
+                            unset($facebookResponse);
+
+                            var_dump($facebookResponse); echo '<br><br><br>';die();
+
+                            if ($nextEvent) {
+                                $isNextEvent = true;
+                            } else {
+                                $isNextEvent = false;
+                            }
+                            while ($isNextEvent) {
+                                $url = $nextEvent;
+                                $nextEvent = "";
+                                $facebookResponse = FacebookGraphHelper::getNextPageResponse($url, $nextEvent);
+                                // "Next Page:-" . $nextPage . "<br/>";
+                                
+                                if (count($facebookResponse["data"]) > 0) {
+                                    $pages[] = $facebookResponse;
+                                    foreach ($facebookResponse['data'] as $key1 => $value1) {
+                                        log_message('info', '!Event!' . $value1['id'] . '!' . $value1['name'] . '!' . $location);
+                                    }
+                                } else {
+                                    $nextEvent = "";
+                                    unset($facebookResponse);
+                                    $isNextEvent = false;
+
+                                }
+                                $url = $configs['facebook_graph_url'] . 'search';
+                            }
+                        }
+                    }
+                }
+
+
+            }
+
+        }
+        return $events;
+    }
+
     public static function getPages()
     {
         $configs = include FACEBOOK_API_CONFIG;
         $categories = $configs['categories'];
         $types = $configs['types'];
+
         $locations = $configs['locations'];
         $url = $configs['facebook_graph_url'] . 'search';
         $pages = [];
@@ -530,21 +604,22 @@ class FacebookGraphHelper
                     $request = ['q' => $q, 'type' => $type];
                     $nextPage = "";
                     $isNextPage = true;
-
+                    var_dump($url); echo '<br><br>'; var_dump($request); echo '<br>';
                     $facebookResponse = FacebookGraphHelper::getResponse($url, $request, true, $nextPage);
                     //$page[] = $facebookResponse;
                     if ($facebookResponse != null) {
                         if (array_key_exists("data", $facebookResponse) && count($facebookResponse["data"]) > 0) {
                             //echo count($facebookResponse["data"]) . 'No Data Present' . "<br/>";
                             $pages[] = $facebookResponse;
-                            //var_dump($facebookResponse);
+                            var_dump($facebookResponse);
+                            die();
                             // $url . "<br/>";
                             foreach ($facebookResponse['data'] as $key1 => $value1) {
 
                                 log_message('info', '!Page!' . $value1['id'] . '!' . $value1['name'] . '!' . $location  );
                             }
 
-                            
+                            var_dump($facebookResponse); echo '<br><br><br>';
                             unset($facebookResponse);
 
                             if ($nextPage) {

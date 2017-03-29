@@ -369,6 +369,6 @@ return array(
         'Yarmouth',
 
     ],
-    'types' => ['page', 'place']
-
+    'types' => ['page', 'place'],
+    'events' => ['event', 'place'],
 );
