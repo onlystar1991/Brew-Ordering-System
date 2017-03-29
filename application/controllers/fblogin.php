@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-class User_Authentication extends CI_Controller
+class fblogin extends CI_Controller
 {
 	function __construct() {
 		parent::__construct();
@@ -14,7 +14,7 @@ class User_Authentication extends CI_Controller
 		// Facebook API Configuration
 		$appId = '1258317107590660'; // 159228921157128
 		$appSecret = '554423ab31abeee1afdb47d2f787b3d3'; // ccbb21ca556d2fe2595614746357d27c
-		$redirectUrl = base_url() . 'user_authentication/';
+		$redirectUrl = base_url() . 'fblogin/';
 		$fbPermissions = 'email';
 		
 		//Call Facebook API
@@ -55,6 +55,6 @@ class User_Authentication extends CI_Controller
 	public function logout() {
 		$this->session->unset_userdata('userData');
 		$this->session->sess_destroy();
-		redirect('/user_authentication');
+		redirect('/fblogin');
 	}
 }
