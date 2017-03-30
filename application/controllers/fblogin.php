@@ -21,7 +21,8 @@ class fblogin extends CI_Controller
 		//Call Facebook API
 		$facebook = new Facebook(array(
 			'appId'  => $appId,
-			'secret' => $appSecret
+			'secret' => $appSecret,
+			'cookie' => true
 		));
 		$testData = array('test' => 'Test', 'data' => 'Data');
 
@@ -29,7 +30,7 @@ class fblogin extends CI_Controller
 		var_dump($testData); echo '<br><br><br>';
 		$fbuser = $facebook->getUser();
 		var_dump($fbuser);
-		
+
 		if ($fbuser) {
 			$userProfile = $facebook->api('/me?fields=id,first_name,last_name,email,gender,locale,picture');
 			// Preparing data for database insertion
