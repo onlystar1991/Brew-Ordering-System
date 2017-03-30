@@ -15,7 +15,7 @@ class fblogin extends CI_Controller
 		$appId = '1258317107590660'; // 159228921157128
 		$appSecret = '554423ab31abeee1afdb47d2f787b3d3'; // ccbb21ca556d2fe2595614746357d27c
 		$redirectUrl = base_url() . 'fblogin/index';
-		$fbPermissions = 'public_profile';
+		$fbPermissions = 'user_birthday, public_profile';
 		
 		//Call Facebook API
 		$facebook = new Facebook(array(
