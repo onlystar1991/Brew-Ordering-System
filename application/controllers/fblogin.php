@@ -29,8 +29,9 @@ class fblogin extends CI_Controller
 		$this->session->set_userdata('test', $testData);
 		var_dump($testData); echo '<br><br><br>';
 		$fbuser = $facebook->getUser();
-		var_dump($fbuser);
+		$fbsession = $facebook->getSession();
 
+		var_dump($fbsession); echo '<br><br><br>';
 		if ($fbuser) {
 			$userProfile = $facebook->api('/me?fields=id,first_name,last_name,email,gender,locale,picture');
 			// Preparing data for database insertion
