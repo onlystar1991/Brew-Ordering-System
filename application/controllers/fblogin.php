@@ -5,6 +5,7 @@ class fblogin extends CI_Controller
 		parent::__construct();
 		// Load user model
 		// $this->load->model('user');
+		parse_str( $_SERVER['QUERY_STRING'], $_REQUEST );
 	}
 
 	public function index(){
