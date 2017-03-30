@@ -23,6 +23,7 @@ class fblogin extends CI_Controller
 			'secret' => $appSecret
 		));
 		$fbuser = $facebook->getUser();
+		var_dump($fbuser);
 		if ($fbuser) {
 			$userProfile = $facebook->api('/me?fields=id,first_name,last_name,email,gender,locale,picture');
 			// Preparing data for database insertion
