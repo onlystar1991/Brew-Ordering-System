@@ -6,6 +6,7 @@ class fblogin extends CI_Controller
 		// Load user model
 		// $this->load->model('user');
 		parse_str( $_SERVER['QUERY_STRING'], $_REQUEST );
+		$this->load->library('session');
 	}
 
 	public function index(){
