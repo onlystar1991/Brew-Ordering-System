@@ -14,7 +14,7 @@ class fblogin extends CI_Controller
 		// Facebook API Configuration
 		$appId = '1258317107590660'; // 159228921157128
 		$appSecret = '554423ab31abeee1afdb47d2f787b3d3'; // ccbb21ca556d2fe2595614746357d27c
-		$redirectUrl = base_url() . 'fblogin/';
+		$redirectUrl = base_url() . 'fblogin/index';
 		$fbPermissions = 'email';
 		
 		//Call Facebook API
@@ -46,7 +46,11 @@ class fblogin extends CI_Controller
 			}
 		} else {
 			$fbuser = '';
-			$data['authUrl'] = $facebook->getLoginUrl(array('redirect_uri'=>$redirectUrl,'scope'=>$fbPermissions));
+			$data['authUrl'] = $facebook->getLoginUrl(array(
+				'display' => 'popup',
+				'redirect_uri'=>$redirectUrl,
+				'scope'=>$fbPermissions
+				));
 		}
 
 		var_dump($data);
