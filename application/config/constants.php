@@ -35,6 +35,8 @@ define('FACEBOOK_API_CONFIG', $_SERVER['DOCUMENT_ROOT'].'/application/config/fac
 define('PARSE_SDK_INC', $_SERVER['DOCUMENT_ROOT'].'/parse-php-sdk-master/autoload.php');
 //   /intense-plains-3648
 
+define('FACEBOOK_SDK_INC', $_SERVER['DOCUMENT_ROOT'].'/php-graph-sdk-5.4/src/Facebook/autoload.php');
+
 define('PEM_DEV_LOC', $_SERVER['DOCUMENT_ROOT'].'/application/controllers/NotibrewDev.pem');
 define('PEM_LOC', $_SERVER['DOCUMENT_ROOT'].'/application/controllers/Notibrew.pem');
 //   /intense-plains-3648

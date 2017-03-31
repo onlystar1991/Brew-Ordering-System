@@ -1,68 +1,102 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+require_once FACEBOOK_SDK_INC;
+
 class fblogin extends CI_Controller
 {
 	function __construct() {
 		parent::__construct();
 		// Load user model
 		// $this->load->model('user');
-		parse_str( $_SERVER['QUERY_STRING'], $_REQUEST );
+		parse_str($_SERVER['QUERY_STRING'], $_REQUEST);
 	}
 
 	public function index(){
-		// Include the facebook api php libraries
-		include_once APPPATH."libraries/facebook-api-php-codexworld/facebook.php";
+		$fb = new Facebook\Facebook([
+			'app_id' => '1258317107590660', // Replace {app-id} with your app id
+			'app_secret' => '554423ab31abeee1afdb47d2f787b3d3',
+			'default_graph_version' => 'v2.2',
+			'default_access_token' => '1258317107590660|554423ab31abeee1afdb47d2f787b3d3'
+		]);
+		$helper = $fb->getRedirectLoginHelper();
 
-		// Facebook API Configuration
-		$appId = '1258317107590660'; // 159228921157128
-		$appSecret = '554423ab31abeee1afdb47d2f787b3d3'; // ccbb21ca556d2fe2595614746357d27c
-		$redirectUrl = base_url() . 'fblogin/index';
-		$fbPermissions = 'user_birthday, public_profile';
-		
-		//Call Facebook API
-		$facebook = new Facebook(array(
-			'appId'  => $appId,
-			'secret' => $appSecret,
-			'cookie' => true
-		));
-		$testData = array('test' => 'Test', 'data' => 'Data');
+		$permissions = ['public_profile']; // Optional permissions
+		$loginUrl = $helper->getLoginUrl(base_url().'/fblogin/login', $permissions);
 
-		$this->session->set_userdata('test', $testData);
-		var_dump($testData); echo '<br><br><br>';
-		$fbuser = $facebook->getUser();
-		$fbsession = $facebook->getSession();
+		echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
+	}
+	public function login(){
+		$fb = new Facebook\Facebook([
+			'app_id' => '1258317107590660', // Replace {app-id} with your app id
+			'app_secret' => '554423ab31abeee1afdb47d2f787b3d3',
+			'default_graph_version' => 'v2.2',
+			'default_access_token' => '1258317107590660|554423ab31abeee1afdb47d2f787b3d3'
+		]);
 
-		var_dump($fbsession); echo '<br><br><br>';
-		if ($fbuser) {
-			$userProfile = $facebook->api('/me?fields=id,first_name,last_name,email,gender,locale,picture');
-			// Preparing data for database insertion
-			$userData['oauth_provider'] = 'facebook';
-			$userData['oauth_uid'] = $userProfile['id'];
-			$userData['first_name'] = $userProfile['first_name'];
-			$userData['last_name'] = $userProfile['last_name'];
-			$userData['email'] = $userProfile['email'];
-			$userData['gender'] = $userProfile['gender'];
-			$userData['locale'] = $userProfile['locale'];
-			$userData['profile_url'] = 'https://www.facebook.com/'.$userProfile['id'];
-			$userData['picture_url'] = $userProfile['picture']['data']['url'];
-			// Insert or update user data
-			// $userID = $this->user->checkUser($userData);
-			if(!empty($userID)){
-				$data['userData'] = $userData;
-				$this->session->set_userdata('userData',$userData);
-			} else {
-				$data['userData'] = array();
-			}
-		} else {
-			$fbuser = '';
-			$data['authUrl'] = $facebook->getLoginUrl(array(
-				'display' => 'popup',
-				'redirect_uri'=>$redirectUrl,
-				'scope'=>$fbPermissions
-				));
+		$helper = $fb->getRedirectLoginHelper();
+
+		try {
+			$accessToken = $helper->getAccessToken();
+		} catch(Facebook\Exceptions\FacebookResponseException $e) {
+			// When Graph returns an error
+			echo 'Graph returned an error: ' . $e->getMessage();
+			exit;
+		} catch(Facebook\Exceptions\FacebookSDKException $e) {
+			// When validation fails or other local issues
+			echo 'Facebook SDK returned an error: ' . $e->getMessage();
+			exit;
 		}
 
-		var_dump($data);
-		$this->load->view('user_authentication/index',$data);
+		if (! isset($accessToken)) {
+			if ($helper->getError()) {
+				header('HTTP/1.0 401 Unauthorized');
+				echo "Error: " . $helper->getError() . "\n";
+				echo "Error Code: " . $helper->getErrorCode() . "\n";
+				echo "Error Reason: " . $helper->getErrorReason() . "\n";
+				echo "Error Description: " . $helper->getErrorDescription() . "\n";
+			} else {
+				header('HTTP/1.0 400 Bad Request');
+				echo 'Bad request';
+			}
+			exit;
+		}
+
+		// Logged in
+		echo '<h3>Access Token</h3>';
+		var_dump($accessToken->getValue());
+
+		// The OAuth 2.0 client handler helps us manage access tokens
+		$oAuth2Client = $fb->getOAuth2Client();
+
+		// Get the access token metadata from /debug_token
+		$tokenMetadata = $oAuth2Client->debugToken($accessToken);
+		echo '<h3>Metadata</h3>';
+		var_dump($tokenMetadata);
+
+		// Validation (these will throw FacebookSDKException's when they fail)
+		$tokenMetadata->validateAppId(1258317107590660); // Replace {app-id} with your app id
+		// If you know the user ID this access token belongs to, you can validate it here
+		//$tokenMetadata->validateUserId('123');
+		$tokenMetadata->validateExpiration();
+
+		if (! $accessToken->isLongLived()) {
+			// Exchanges a short-lived access token for a long-lived one
+			try {
+				$accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
+			} catch (Facebook\Exceptions\FacebookSDKException $e) {
+				echo "<p>Error getting long-lived access token: " . $helper->getMessage() . "</p>\n\n";
+				exit;
+			}
+
+			echo '<h3>Long-lived</h3>';
+			var_dump($accessToken->getValue());
+		}
+
+		$_SESSION['fb_access_token'] = (string) $accessToken;
+
+		// User is logged in with a long-lived access token.
+		// You can redirect them to a members-only page.
+		//header('Location: https://example.com/members.php');
 	}
 	
 	public function logout() {
