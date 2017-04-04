@@ -7,8 +7,8 @@
  */
 
 return array(
-    'app_id' => "159228921157128",
-    'app_secret' => "ccbb21ca556d2fe2595614746357d27c",
+    'app_id' => "1258317107590660", //159228921157128
+    'app_secret' => "554423ab31abeee1afdb47d2f787b3d3", //ccbb21ca556d2fe2595614746357d27c
     'facebook_graph_url' => "https://graph.facebook.com/v2.6/",
     'categories' => ['Brewery', 'Bar', 'Retailer'],
     //'categories' => ['Brewery','Breweries'],
